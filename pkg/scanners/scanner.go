@@ -20,11 +20,3 @@ func (st *stub) EnterChildNode(key string, w walker.Walkable) {}
 func (st *stub) LeaveChildNode(key string, w walker.Walkable) {}
 func (st *stub) EnterChildList(key string, w walker.Walkable) {}
 func (st *stub) LeaveChildList(key string, w walker.Walkable) {}
-
-type scorer struct {
-	Step  float64
-	score float64
-}
-
-func (sc *scorer) Up()            { sc.score += sc.Step }
-func (sc *scorer) Score() float64 { return sc.score }

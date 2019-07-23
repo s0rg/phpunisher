@@ -22,7 +22,7 @@ func (g *group) Start(closer func()) {
 	}
 }
 
-func (g *group) Drain() {
+func (g *group) Wait() {
 	g.closer()
 	g.wg.Wait()
 }

@@ -18,6 +18,12 @@ release:
 vet:
 	go vet
 
+test:
+	go test -race -count 1 -v -coverprofile=test.cover ./...
+
+test-cover: test
+	go tool cover -func=test.cover
+
 clean:
 	[ -f "${BIN}" ] && rm "${BIN}"
 

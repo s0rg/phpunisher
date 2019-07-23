@@ -90,7 +90,7 @@ func (p *Pipe) Walk(root string) (err error) {
 
 	err = filepath.Walk(root, p.walker)
 
-	p.read_grp.Drain()
-	p.work_grp.Drain()
+	p.read_grp.Wait()
+	p.work_grp.Wait()
 	return
 }
