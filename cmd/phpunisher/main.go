@@ -15,6 +15,8 @@ import (
 )
 
 var (
+	GitHash    string
+	BuildDate  string
 	minScore   = flag.Float64("s", 0, "minimal score to threat file as suspect")
 	logVerbose = flag.Bool("v", false, "show scan details for found suspects")
 	scanMasks  = flag.String("m", "*.php*", "scan masks, use ';' as separator")
@@ -52,6 +54,7 @@ func buildScanners() []scanners.Scanner {
 
 func main() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	log.Println("git", GitHash, "build at", BuildDate)
 	flag.Parse()
 
 	args := flag.Args()
@@ -61,8 +64,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	report := log.New(os.Stdout, "", 0)
 	verbose := *logVerbose
+	report := log.New(os.Stdout, "", 0)
 
 	handler := func(f *pipe.File) {
 		parser := php7.NewParser(&f.Body, f.Path)
