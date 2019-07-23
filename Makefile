@@ -1,4 +1,4 @@
-BIN=phpunisher
+BIN=phpunisher-bin
 CMD=./cmd/phpunisher
 
 GIT_HASH=`git rev-parse --short HEAD`
