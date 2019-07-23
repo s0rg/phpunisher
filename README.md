@@ -23,10 +23,10 @@ Finds smelly php code pieces
 
 # scanners
 
-array-call       - finds function calls from array elements
-array-operations - notifies if array operations amount is over 20% of all operations
-bad-func         - scans for a 'bad functions' (like str_rot13 and base64_decode)
-eval-expr        - scans for eval expression
-single-include   - notifies if whole file is single include instructions
-bad-string       - notifies if string literal has more than two escaped symbols
+- array-call       finds function calls from array elements
+- array-operations notifies if array operations amount is over 20% of all operations
+- bad-func         scans for a 'bad functions' (like str_rot13 and base64_decode)
+- eval-expr        scans for eval expression
+- single-include   notifies if whole file is single include instructions
+- bad-string       notifies if string literal has more than two escaped symbols
 
