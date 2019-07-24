@@ -5,38 +5,20 @@ import (
 )
 
 func runGroupN(n int) (count int, closed bool) {
-	ch_in := make(chan struct{}, n)
-	ch_out := make(chan struct{}, n)
-
-	action := func() {
-		for _ = range ch_in {
-			ch_out <- struct{}{}
-		}
-	}
-
-	closer := func() {
-		close(ch_in)
-		closed = true
-	}
-
+	ch := make(chan struct{}, n)
 	g := group{
 		Workers: n,
-		Action:  action,
+		Action:  func() { ch <- struct{}{} },
 	}
-	g.Start(closer)
-
-	for i := 0; i < n; i++ {
-		ch_in <- struct{}{}
-	}
-
+	g.Start(func() { closed = true })
 	g.Wait()
 
-	for _ = range ch_out {
+	for _ = range ch {
 		if count++; count == n {
 			break
 		}
 	}
-	close(ch_out)
+	close(ch)
 
 	return
 }

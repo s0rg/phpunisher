@@ -69,17 +69,6 @@ func (p *Pipe) match(path string) {
 	}
 }
 
-func (p *Pipe) walker(path string, f os.FileInfo, err error) error {
-	switch {
-	case err != nil:
-	case f.IsDir():
-	case !f.Mode().IsRegular():
-	default:
-		p.match(path)
-	}
-	return nil
-}
-
 func (p *Pipe) Walk(root string) (err error) {
 
 	p.read_q = make(chan *File, bufSize)
@@ -88,7 +77,19 @@ func (p *Pipe) Walk(root string) (err error) {
 	p.read_grp.Start(func() { close(p.read_q) })
 	p.work_grp.Start(func() { close(p.work_q) })
 
-	err = filepath.Walk(root, p.walker)
+	err = filepath.Walk(
+		root,
+		func(path string, f os.FileInfo, err error) error {
+			switch {
+			case err != nil:
+			case f.IsDir():
+			case !f.Mode().IsRegular():
+			default:
+				p.match(path)
+			}
+			return nil
+		},
+	)
 
 	p.read_grp.Wait()
 	p.work_grp.Wait()
