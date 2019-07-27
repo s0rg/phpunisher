@@ -1,8 +1,6 @@
 package pipe
 
 import (
-	"bytes"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -11,11 +9,6 @@ import (
 const (
 	bufSize int = 256
 )
-
-type File struct {
-	Path string
-	Body bytes.Buffer
-}
 
 type Pipe struct {
 	masks    []string
@@ -43,12 +36,10 @@ func New(workers int, masks []string, handler func(f *File)) *Pipe {
 
 func (p *Pipe) reader() {
 	for f := range p.read_q {
-		bts, err := ioutil.ReadFile(f.Path)
-		if err != nil {
+		if err := f.ReadBody(); err != nil {
 			log.Printf("reader: %s error: %v", f.Path, err)
 			continue
 		}
-		f.Body.Write(bts)
 		p.work_q <- f
 	}
 }
@@ -93,5 +84,6 @@ func (p *Pipe) Walk(root string) (err error) {
 
 	p.read_grp.Wait()
 	p.work_grp.Wait()
+
 	return
 }

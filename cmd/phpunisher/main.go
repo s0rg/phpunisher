@@ -58,7 +58,6 @@ func main() {
 	flag.Parse()
 
 	args := flag.Args()
-
 	if len(args) != 1 {
 		flag.Usage()
 		os.Exit(1)
@@ -66,6 +65,20 @@ func main() {
 
 	verbose := *logVerbose
 	report := log.New(os.Stdout, "", 0)
+
+	reportSuspect := func(path string, s scores) {
+		var sb strings.Builder
+
+		sb.WriteString(path)
+		if verbose {
+			sb.WriteString(fmt.Sprintf(" [%.1f]\n", s.Sum()))
+			sort.Sort(s)
+			for _, d := range s {
+				sb.WriteString(fmt.Sprintf("\t%s %.1f\n", d.Scanner, d.Score))
+			}
+		}
+		report.Println(sb.String())
+	}
 
 	handler := func(f *pipe.File) {
 		parser := php7.NewParser(&f.Body, f.Path)
@@ -82,7 +95,6 @@ func main() {
 		}
 
 		details := scores{}
-
 		scanners := buildScanners()
 		for i := 0; i < len(scanners); i++ {
 			s := scanners[i]
@@ -95,18 +107,8 @@ func main() {
 			}
 		}
 
-		var sb strings.Builder
-
 		if total := details.Sum(); total > *minScore {
-			sb.WriteString(f.Path)
-			if verbose {
-				sb.WriteString(fmt.Sprintf(" [%.1f]\n", total))
-				sort.Sort(details)
-				for _, d := range details {
-					sb.WriteString(fmt.Sprintf("\t%s %.1f\n", d.Scanner, d.Score))
-				}
-			}
-			report.Println(sb.String())
+			reportSuspect(f.Path, details)
 		}
 	}
 
