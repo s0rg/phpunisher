@@ -11,12 +11,12 @@ const (
 )
 
 type Pipe struct {
-	masks    []string
-	read_q   chan *File
-	read_grp group
-	work_q   chan *File
-	work_grp group
-	handler  func(f *File)
+	masks     []string
+	readQ     chan *File
+	readGroup group
+	workQ     chan *File
+	workGroup group
+	handler   func(f *File)
 }
 
 func New(workers int, masks []string, handler func(f *File)) *Pipe {
@@ -25,27 +25,27 @@ func New(workers int, masks []string, handler func(f *File)) *Pipe {
 		handler: handler,
 	}
 
-	p.read_grp.Workers = 1
-	p.read_grp.Action = p.reader
+	p.readGroup.Workers = 1
+	p.readGroup.Action = p.reader
 
-	p.work_grp.Workers = workers
-	p.work_grp.Action = p.worker
+	p.workGroup.Workers = workers
+	p.workGroup.Action = p.worker
 
 	return p
 }
 
 func (p *Pipe) reader() {
-	for f := range p.read_q {
+	for f := range p.readQ {
 		if err := f.ReadBody(); err != nil {
 			log.Printf("reader: %s error: %v", f.Path, err)
 			continue
 		}
-		p.work_q <- f
+		p.workQ <- f
 	}
 }
 
 func (p *Pipe) worker() {
-	for f := range p.work_q {
+	for f := range p.workQ {
 		p.handler(f)
 	}
 }
@@ -54,7 +54,7 @@ func (p *Pipe) match(path string) {
 	name := filepath.Base(path)
 	for i := 0; i < len(p.masks); i++ {
 		if ok, err := filepath.Match(p.masks[i], name); err == nil && ok {
-			p.read_q <- &File{Path: path}
+			p.readQ <- &File{Path: path}
 			break
 		}
 	}
@@ -62,11 +62,11 @@ func (p *Pipe) match(path string) {
 
 func (p *Pipe) Walk(root string) (err error) {
 
-	p.read_q = make(chan *File, bufSize)
-	p.work_q = make(chan *File, p.work_grp.Workers+1)
+	p.readQ = make(chan *File, bufSize)
+	p.workQ = make(chan *File, p.workGroup.Workers+1)
 
-	p.read_grp.Start(func() { close(p.read_q) })
-	p.work_grp.Start(func() { close(p.work_q) })
+	p.readGroup.Start(func() { close(p.readQ) })
+	p.workGroup.Start(func() { close(p.workQ) })
 
 	err = filepath.Walk(
 		root,
@@ -82,8 +82,8 @@ func (p *Pipe) Walk(root string) (err error) {
 		},
 	)
 
-	p.read_grp.Wait()
-	p.work_grp.Wait()
+	p.readGroup.Wait()
+	p.workGroup.Wait()
 
 	return
 }

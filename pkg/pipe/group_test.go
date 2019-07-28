@@ -13,7 +13,7 @@ func runGroupN(n int) (count int, closed bool) {
 	g.Start(func() { closed = true })
 	g.Wait()
 
-	for _ = range ch {
+	for range ch {
 		if count++; count == n {
 			break
 		}

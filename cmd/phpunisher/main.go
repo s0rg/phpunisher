@@ -95,9 +95,7 @@ func main() {
 		}
 
 		details := scores{}
-		scanners := buildScanners()
-		for i := 0; i < len(scanners); i++ {
-			s := scanners[i]
+		for _, s := range buildScanners() {
 			root.Walk(s)
 			if sc := s.Score(); sc > 0 {
 				details = append(details, score{
@@ -106,7 +104,6 @@ func main() {
 				})
 			}
 		}
-
 		if total := details.Sum(); total > *minScore {
 			reportSuspect(f.Path, details)
 		}

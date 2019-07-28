@@ -1,5 +1,6 @@
 BIN=phpunisher-bin
 CMD=./cmd/phpunisher
+COVER=test.cover
 
 GIT_HASH=`git rev-parse --short HEAD`
 BUILD_DATE=`date +%FT%T%z`
@@ -19,11 +20,11 @@ vet:
 	go vet
 
 test:
-	go test -race -count 1 -v -coverprofile=test.cover ./...
+	go test -race -count 1 -v -coverprofile="${COVER}" ./...
 
 test-cover: test
-	go tool cover -func=test.cover
+	go tool cover -func="${COVER}"
 
 clean:
 	[ -f "${BIN}" ] && rm "${BIN}"
-
+	[ -f "${COVER}" ] && rm "${COVER}"
