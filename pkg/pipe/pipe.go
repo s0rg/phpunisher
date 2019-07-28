@@ -60,15 +60,23 @@ func (p *Pipe) match(path string) {
 	}
 }
 
-func (p *Pipe) Walk(root string) (err error) {
-
+func (p *Pipe) start() {
 	p.readQ = make(chan *File, bufSize)
 	p.workQ = make(chan *File, p.workGroup.Workers+1)
 
 	p.readGroup.Start(func() { close(p.readQ) })
 	p.workGroup.Start(func() { close(p.workQ) })
+}
 
-	err = filepath.Walk(
+func (p *Pipe) stop() {
+	p.readGroup.Wait()
+	p.workGroup.Wait()
+}
+
+func (p *Pipe) Walk(root string) error {
+	p.start()
+	defer p.stop()
+	return filepath.Walk(
 		root,
 		func(path string, f os.FileInfo, err error) error {
 			switch {
@@ -81,9 +89,4 @@ func (p *Pipe) Walk(root string) (err error) {
 			return nil
 		},
 	)
-
-	p.readGroup.Wait()
-	p.workGroup.Wait()
-
-	return
 }
