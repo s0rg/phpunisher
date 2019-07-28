@@ -14,9 +14,9 @@ type stub struct {
 	name string
 }
 
-func (st *stub) Name() string                                 { return st.name }
-func (st *stub) LeaveNode(n walker.Walkable)                  {}
-func (st *stub) EnterChildNode(key string, w walker.Walkable) {}
-func (st *stub) LeaveChildNode(key string, w walker.Walkable) {}
-func (st *stub) EnterChildList(key string, w walker.Walkable) {}
-func (st *stub) LeaveChildList(key string, w walker.Walkable) {}
+func (s *stub) Name() string                                 { return s.name }
+func (s *stub) LeaveNode(n walker.Walkable)                  {}
+func (s *stub) EnterChildNode(key string, w walker.Walkable) {}
+func (s *stub) LeaveChildNode(key string, w walker.Walkable) {}
+func (s *stub) EnterChildList(key string, w walker.Walkable) {}
+func (s *stub) LeaveChildList(key string, w walker.Walkable) {}
