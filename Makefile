@@ -10,14 +10,14 @@ LDFLAGS_REL=-w -s ${LDFLAGS}
 
 .PHONY: clean build
 
-build:
+build: vet
 	go build -ldflags "${LDFLAGS}" -o "${BIN}" "${CMD}"
 
-release:
+release: vet
 	go build -ldflags "${LDFLAGS_REL}" -o "${BIN}" "${CMD}"
 
 vet:
-	go vet
+	go vet ./...
 
 test:
 	go test -race -count 1 -v -coverprofile="${COVER}" ./...
