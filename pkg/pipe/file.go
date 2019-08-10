@@ -10,11 +10,10 @@ type File struct {
 	Body bytes.Buffer
 }
 
-func (f *File) ReadBody() error {
-	bts, err := ioutil.ReadFile(f.Path)
-	if err != nil {
-		return err
+func (f *File) ReadBody() (err error) {
+	var b []byte
+	if b, err = ioutil.ReadFile(f.Path); err == nil {
+		_, err = f.Body.Write(b)
 	}
-	_, err = f.Body.Write(bts)
-	return err
+	return
 }

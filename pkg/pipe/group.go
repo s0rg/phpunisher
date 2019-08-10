@@ -1,8 +1,6 @@
 package pipe
 
-import (
-	"sync"
-)
+import "sync"
 
 type group struct {
 	Workers int
@@ -11,14 +9,16 @@ type group struct {
 	wg      sync.WaitGroup
 }
 
+func (g *group) actor() {
+	g.Action()
+	g.wg.Done()
+}
+
 func (g *group) Start(closer func()) {
 	g.closer = closer
 	g.wg.Add(g.Workers)
 	for i := 0; i < g.Workers; i++ {
-		go func() {
-			g.Action()
-			g.wg.Done()
-		}()
+		go g.actor()
 	}
 }
 
