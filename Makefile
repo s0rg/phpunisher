@@ -25,6 +25,9 @@ test:
 test-cover: test
 	go tool cover -func="${COVER}"
 
+lint:
+	golangci-lint run
+
 clean:
 	[ -f "${BIN}" ] && rm "${BIN}"
 	[ -f "${COVER}" ] && rm "${COVER}"
