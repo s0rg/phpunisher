@@ -15,8 +15,7 @@ type EvalExpr struct {
 
 func NewEvalExpr(score float64) *EvalExpr {
 	return &EvalExpr{
-		stub:   stub{evalName},
-		scorer: scorer{Step: score},
+		scorer: scorer{Step: score, name: evalName},
 	}
 }
 

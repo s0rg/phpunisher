@@ -17,8 +17,7 @@ type BadString struct {
 
 func NewBadString(score float64) *BadString {
 	return &BadString{
-		stub:   stub{badstrName},
-		scorer: scorer{Step: score},
+		scorer: scorer{Step: score, name: badstrName},
 	}
 }
 

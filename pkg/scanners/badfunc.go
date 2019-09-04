@@ -23,8 +23,7 @@ type BadFunc struct {
 
 func NewBadFunc(score float64) *BadFunc {
 	return &BadFunc{
-		stub:   stub{bfName},
-		scorer: scorer{Step: score},
+		scorer: scorer{Step: score, name: bfName},
 	}
 }
 

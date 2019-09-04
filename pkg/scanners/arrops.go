@@ -22,7 +22,6 @@ type ArrayOperations struct {
 func NewArrayOperations(score float64) *ArrayOperations {
 	return &ArrayOperations{
 		step: score,
-		stub: stub{arropsName},
 	}
 }
 
@@ -46,4 +45,8 @@ func (a *ArrayOperations) Score() float64 {
 		return a.step * ((rate - maxArrOpsRate) * 10.0)
 	}
 	return 0
+}
+
+func (a *ArrayOperations) Name() string {
+	return arropsName
 }

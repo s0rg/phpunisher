@@ -16,8 +16,7 @@ type ArrayCall struct {
 
 func NewArrayCall(score float64) *ArrayCall {
 	return &ArrayCall{
-		stub:   stub{arrcallName},
-		scorer: scorer{Step: score},
+		scorer: scorer{Step: score, name: arrcallName},
 	}
 }
 

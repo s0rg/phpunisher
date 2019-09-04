@@ -17,7 +17,7 @@ import (
 var (
 	GitHash    string
 	BuildDate  string
-	minScore   = flag.Float64("s", 0, "minimal score to threat file as suspect")
+	minScore   = flag.Float64("s", 0, "minimal score to threat file as suspect (default: 0)")
 	logVerbose = flag.Bool("v", false, "show scan details for found suspects")
 	scanMasks  = flag.String("m", "*.php*", "scan masks, use ';' as separator")
 	numWorkers = flag.Int("w", 2, "workers count (scan parallelism)")

@@ -10,11 +10,8 @@ type Scanner interface {
 	Name() string
 }
 
-type stub struct {
-	name string
-}
+type stub struct{}
 
-func (s *stub) Name() string                                 { return s.name }
 func (s *stub) LeaveNode(n walker.Walkable)                  {}
 func (s *stub) EnterChildNode(key string, w walker.Walkable) {}
 func (s *stub) LeaveChildNode(key string, w walker.Walkable) {}

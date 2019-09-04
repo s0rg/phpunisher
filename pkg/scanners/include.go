@@ -16,8 +16,7 @@ type SingleInclude struct {
 
 func NewSingleInclude(score float64) *SingleInclude {
 	return &SingleInclude{
-		stub:   stub{sincName},
-		scorer: scorer{Step: score},
+		scorer: scorer{Step: score, name: sincName},
 	}
 }
 
