@@ -1,5 +1,5 @@
 # phpunisher
-Finds smelly php code pieces
+Finds code pieces, that looks like viruses/trojans inside php source code.
 
 # usage
 ```
