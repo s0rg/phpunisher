@@ -1,6 +1,6 @@
 # phpunisher
 Finds code pieces, that looks like viruses/trojans inside php source code.
-Based on great [php-parser](github.com/z7zmey/php-parser) library.
+Based on great [php-parser](https://github.com/z7zmey/php-parser) library.
 
 # usage
 ```
