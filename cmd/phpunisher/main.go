@@ -38,6 +38,7 @@ func (s scores) Sum() (rv float64) {
 	for i := 0; i < len(s); i++ {
 		rv += s[i].Score
 	}
+
 	return
 }
 
@@ -49,6 +50,40 @@ func buildScanners() []scanners.Scanner {
 		scanners.NewBadString(0.1),
 		scanners.NewBadFunc(0.1),
 		scanners.NewArrayOperations(0.2),
+	}
+}
+
+func makeHandler(callback func(path string, s scores)) func(f *pipe.File) {
+	return func(f *pipe.File) {
+		parser := php7.NewParser(&f.Body, f.Path)
+		parser.Parse()
+
+		for _, e := range parser.GetErrors() {
+			log.Printf("scanner: parse error on %s: %v", f.Path, e)
+		}
+
+		root := parser.GetRootNode()
+		if root == nil {
+			log.Printf("scanner: no root node for %s", f.Path)
+			return
+		}
+
+		details := scores{}
+
+		for _, s := range buildScanners() {
+			root.Walk(s)
+
+			if sc := s.Score(); sc > 0 {
+				details = append(details, score{
+					Scanner: s.Name(),
+					Score:   sc,
+				})
+			}
+		}
+
+		if total := details.Sum(); total > *minScore {
+			callback(f.Path, details)
+		}
 	}
 }
 
@@ -70,44 +105,20 @@ func main() {
 		var sb strings.Builder
 
 		sb.WriteString(path)
+
 		if verbose {
 			sb.WriteString(fmt.Sprintf(" [%.1f]\n", s.Sum()))
 			sort.Sort(s)
+
 			for _, d := range s {
 				sb.WriteString(fmt.Sprintf("\t%s %.1f\n", d.Scanner, d.Score))
 			}
 		}
+
 		report.Println(sb.String())
 	}
 
-	handler := func(f *pipe.File) {
-		parser := php7.NewParser(&f.Body, f.Path)
-		parser.Parse()
-
-		for _, e := range parser.GetErrors() {
-			log.Printf("scanner: parse error on %s: %v", f.Path, e)
-		}
-
-		root := parser.GetRootNode()
-		if root == nil {
-			log.Printf("scanner: no root node for %s", f.Path)
-			return
-		}
-
-		details := scores{}
-		for _, s := range buildScanners() {
-			root.Walk(s)
-			if sc := s.Score(); sc > 0 {
-				details = append(details, score{
-					Scanner: s.Name(),
-					Score:   sc,
-				})
-			}
-		}
-		if total := details.Sum(); total > *minScore {
-			reportSuspect(f.Path, details)
-		}
-	}
+	handler := makeHandler(reportSuspect)
 
 	p := pipe.New(*numWorkers, strings.Split(*scanMasks, ";"), handler)
 	if err := p.Walk(args[0]); err != nil {

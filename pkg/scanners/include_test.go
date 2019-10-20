@@ -8,7 +8,6 @@ import (
 )
 
 func TestSingleInclude(t *testing.T) {
-
 	builder := func() Scanner {
 		return NewSingleInclude(1.0)
 	}
@@ -21,15 +20,18 @@ func TestSingleInclude(t *testing.T) {
 	badCase := []node.Node{
 		&node.Root{Stmts: singleInclude},
 	}
+
 	badCase = append(badCase, singleInclude...)
 
 	notSingle := []node.Node{
 		&expr.Include{},
 		&expr.Empty{},
 	}
+
 	goodCase := []node.Node{
 		&node.Root{Stmts: notSingle},
 	}
+
 	goodCase = append(goodCase, notSingle...)
 
 	testCases := []testCase{

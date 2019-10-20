@@ -12,8 +12,10 @@ type File struct {
 
 func (f *File) ReadBody() (err error) {
 	var b []byte
+
 	if b, err = ioutil.ReadFile(f.Path); err == nil {
 		_, err = f.Body.Write(b)
 	}
+
 	return
 }

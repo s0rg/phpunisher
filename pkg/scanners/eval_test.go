@@ -8,7 +8,6 @@ import (
 )
 
 func TestEval(t *testing.T) {
-
 	builder := func() Scanner {
 		return NewEvalExpr(1.0)
 	}

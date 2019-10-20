@@ -52,6 +52,7 @@ func (p *Pipe) worker() {
 
 func (p *Pipe) match(path string) {
 	name := filepath.Base(path)
+
 	for i := 0; i < len(p.masks); i++ {
 		if ok, err := filepath.Match(p.masks[i], name); err == nil && ok {
 			p.readQ <- &File{Path: path}
@@ -76,6 +77,7 @@ func (p *Pipe) stop() {
 func (p *Pipe) Walk(root string) error {
 	p.start()
 	defer p.stop()
+
 	return filepath.Walk(
 		root,
 		func(path string, f os.FileInfo, err error) error {

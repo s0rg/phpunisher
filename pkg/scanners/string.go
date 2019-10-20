@@ -23,7 +23,6 @@ func NewBadString(score float64) *BadString {
 
 // countBadEscapes finds number or escaped symbols in string, that are not in (\n, \r, \t)
 func countBadEscapes(s string) (result int) {
-
 	var afterSlash bool
 
 	for i := 0; i < len(s); i++ {
@@ -34,11 +33,13 @@ func countBadEscapes(s string) (result int) {
 			// skip lf, cr, tab
 		default:
 			if afterSlash {
-				result++
 				afterSlash = false
+
+				result++
 			}
 		}
 	}
+
 	return
 }
 
@@ -46,11 +47,11 @@ func min(a, b int) int {
 	if a < b {
 		return a
 	}
+
 	return b
 }
 
 func (bs *BadString) scoreUp(count int) {
-
 	var ups int
 
 	switch {
@@ -80,5 +81,6 @@ func (bs *BadString) EnterNode(w walker.Walkable) bool {
 			bs.scoreUp(bad)
 		}
 	}
+
 	return true
 }

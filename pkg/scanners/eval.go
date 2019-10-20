@@ -25,5 +25,6 @@ func (e *EvalExpr) EnterNode(w walker.Walkable) bool {
 	case *expr.Eval:
 		e.scorer.Up()
 	}
+
 	return true
 }

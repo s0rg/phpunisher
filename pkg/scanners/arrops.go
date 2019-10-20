@@ -13,10 +13,10 @@ const (
 )
 
 type ArrayOperations struct {
+	stub
+	step   float64
 	arrOps int
 	ops    int
-	step   float64
-	stub
 }
 
 func NewArrayOperations(score float64) *ArrayOperations {
@@ -36,6 +36,7 @@ func (a *ArrayOperations) EnterNode(w walker.Walkable) bool {
 	default:
 		a.ops++
 	}
+
 	return true
 }
 
@@ -44,6 +45,7 @@ func (a *ArrayOperations) Score() float64 {
 	if rate > maxArrOpsRate {
 		return a.step * ((rate - maxArrOpsRate) * 10.0)
 	}
+
 	return 0
 }
 

@@ -31,5 +31,6 @@ func (a *ArrayCall) EnterNode(w walker.Walkable) bool {
 	default:
 		a.prev = n
 	}
+
 	return true
 }

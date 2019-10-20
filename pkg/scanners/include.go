@@ -30,5 +30,6 @@ func (s *SingleInclude) EnterNode(w walker.Walkable) bool {
 			s.scorer.Up()
 		}
 	}
+
 	return true
 }

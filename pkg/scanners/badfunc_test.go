@@ -21,7 +21,6 @@ func buildFuncNodes(fn string) []node.Node {
 }
 
 func TestBadFunc(t *testing.T) {
-
 	builder := func() Scanner {
 		return NewBadFunc(1.0)
 	}

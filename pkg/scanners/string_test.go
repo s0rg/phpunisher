@@ -8,7 +8,6 @@ import (
 )
 
 func TestBadString(t *testing.T) {
-
 	builder := func() Scanner {
 		return NewBadString(1.0)
 	}
@@ -28,7 +27,6 @@ func TestBadString(t *testing.T) {
 }
 
 func TestBadStringScore(t *testing.T) {
-
 	type scoreCase struct {
 		Bads int
 		Want float64

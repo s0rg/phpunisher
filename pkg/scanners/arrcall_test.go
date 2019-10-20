@@ -15,11 +15,13 @@ type testCase struct {
 func runCases(t *testing.T, builder func() Scanner, cases []testCase) {
 	for _, tc := range cases {
 		s := builder()
+
 		for _, n := range tc.Nodes {
 			if !s.EnterNode(n) {
 				t.Fatalf("EnterNode returns false for: %v", n)
 			}
 		}
+
 		if score := s.Score(); score < tc.Want {
 			t.Fatalf("failed on case: %+v score: %.1f", tc, score)
 		}
@@ -27,7 +29,6 @@ func runCases(t *testing.T, builder func() Scanner, cases []testCase) {
 }
 
 func TestArrayCall(t *testing.T) {
-
 	builder := func() Scanner {
 		return NewArrayCall(1.0)
 	}

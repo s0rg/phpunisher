@@ -17,6 +17,7 @@ func (g *group) actor() {
 func (g *group) Start(closer func()) {
 	g.closer = closer
 	g.wg.Add(g.Workers)
+
 	for i := 0; i < g.Workers; i++ {
 		go g.actor()
 	}

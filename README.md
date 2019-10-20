@@ -1,5 +1,6 @@
 # phpunisher
 Finds code pieces, that looks like viruses/trojans inside php source code.
+Based on great [php-parser](github.com/z7zmey/php-parser) library.
 
 # usage
 ```
@@ -25,7 +26,7 @@ Finds code pieces, that looks like viruses/trojans inside php source code.
 
 - **array-call** finds function calls from array elements
 - **array-operations** notifies if array operations amount is over 20% of all operations
-- **bad-func** scans for a 'bad functions' (like str_rot13 and base64_decode)
+- **bad-func** scans againts 'bad function' list (based on [this article](https://habr.com/en/company/modesco/blog/472092))
 - **eval-expr** scans for eval expression
 - **single-include** notifies if whole file is single include instruction
 - **bad-string** notifies if string literal has more than two escaped symbols

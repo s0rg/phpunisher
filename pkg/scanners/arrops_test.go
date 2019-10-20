@@ -8,7 +8,6 @@ import (
 )
 
 func TestArrayOperations(t *testing.T) {
-
 	builder := func() Scanner {
 		return NewArrayOperations(1.0)
 	}
