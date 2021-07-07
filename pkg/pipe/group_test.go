@@ -10,13 +10,12 @@ func runGroupN(n int) (count int, closed bool) {
 		Workers: n,
 		Action:  func() { ch <- struct{}{} },
 	}
+
 	g.Start(func() { closed = true })
 	g.Wait()
 
-	for range ch {
-		if count++; count == n {
-			break
-		}
+	for ; count < n; count++ {
+		<-ch
 	}
 
 	close(ch)
@@ -25,6 +24,8 @@ func runGroupN(n int) (count int, closed bool) {
 }
 
 func TestGroup(t *testing.T) {
+	t.Parallel()
+
 	tests := []int{1, 8, 16, 32}
 
 	for i := 0; i < len(tests); i++ {

@@ -8,6 +8,8 @@ import (
 )
 
 func TestBadString(t *testing.T) {
+	t.Parallel()
+
 	builder := func() Scanner {
 		return NewBadString(1.0)
 	}
@@ -27,6 +29,8 @@ func TestBadString(t *testing.T) {
 }
 
 func TestBadStringScore(t *testing.T) {
+	t.Parallel()
+
 	type scoreCase struct {
 		Bads int
 		Want float64
@@ -47,7 +51,9 @@ func TestBadStringScore(t *testing.T) {
 
 	for _, tc := range testCases {
 		s := NewBadString(1.0)
-		if s.scoreUp(tc.Bads); s.Score() < tc.Want {
+		s.scoreUp(tc.Bads)
+
+		if s.Score() < tc.Want {
 			t.Fatalf("case failed: %d want: %.2f got: %.2f", tc.Bads, tc.Want, s.Score())
 		}
 	}

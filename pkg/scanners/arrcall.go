@@ -20,9 +20,14 @@ func NewArrayCall(score float64) *ArrayCall {
 	}
 }
 
-// EnterNode is invoked at every node in hierarchy
+// EnterNode is invoked at every node in hierarchy.
 func (a *ArrayCall) EnterNode(w walker.Walkable) bool {
-	n := w.(node.Node)
+	n, ok := w.(node.Node)
+
+	if !ok {
+		return false
+	}
+
 	switch n.(type) {
 	case *expr.ArrayDimFetch:
 		if _, ok := a.prev.(*expr.FunctionCall); ok {

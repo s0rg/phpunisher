@@ -8,6 +8,8 @@ import (
 )
 
 func TestSingleInclude(t *testing.T) {
+	t.Parallel()
+
 	builder := func() Scanner {
 		return NewSingleInclude(1.0)
 	}

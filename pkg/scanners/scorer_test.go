@@ -5,6 +5,8 @@ import (
 )
 
 func TestScorerStep(t *testing.T) {
+	t.Parallel()
+
 	s := scorer{Step: 1.0}
 
 	for i := 1; i < 100; i++ {
@@ -17,6 +19,8 @@ func TestScorerStep(t *testing.T) {
 }
 
 func TestScorerName(t *testing.T) {
+	t.Parallel()
+
 	n := "test-name"
 
 	s := scorer{name: n}

@@ -8,6 +8,8 @@ import (
 )
 
 func TestArrayOperations(t *testing.T) {
+	t.Parallel()
+
 	builder := func() Scanner {
 		return NewArrayOperations(1.0)
 	}

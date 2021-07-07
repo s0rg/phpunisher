@@ -5,6 +5,8 @@ import (
 	"github.com/z7zmey/php-parser/node/expr"
 	"github.com/z7zmey/php-parser/node/name"
 	"github.com/z7zmey/php-parser/walker"
+
+	"github.com/s0rg/phpunisher/pkg/set"
 )
 
 const bfName = "bad-func"
@@ -74,34 +76,47 @@ var (
 type BadFunc struct {
 	stub
 	scorer
+	list set.Strings
 }
 
 func NewBadFunc(score float64) *BadFunc {
-	return &BadFunc{
+	bf := &BadFunc{
 		scorer: scorer{Step: score, name: bfName},
-	}
-}
-
-func isBadFunc(name string) (yes bool) {
-	for i := 0; i < len(badFuncs); i++ {
-		if yes = name == badFuncs[i]; yes {
-			return
-		}
+		list:   make(set.Strings),
 	}
 
-	return
+	bf.list.FromList(badFuncs)
+
+	return bf
 }
 
-// EnterNode is invoked at every node in hierarchy
+// EnterNode is invoked at every node in hierarchy.
 func (bf *BadFunc) EnterNode(w walker.Walkable) bool {
-	switch w.(node.Node).(type) {
+	n, ok := w.(node.Node)
+	if !ok {
+		return false
+	}
+
+	switch n.(type) {
 	case *expr.FunctionCall:
-		fc := w.(*expr.FunctionCall)
-		if n, ok := fc.Function.(*name.Name); ok {
-			for _, p := range n.Parts {
-				if np, ok := p.(*name.NamePart); ok && isBadFunc(np.Value) {
-					bf.scorer.Up()
-				}
+		fc, ok := w.(*expr.FunctionCall)
+		if !ok {
+			return false
+		}
+
+		nm, ok := fc.Function.(*name.Name)
+		if !ok {
+			return false
+		}
+
+		for _, p := range nm.Parts {
+			np, ok := p.(*name.NamePart)
+			if !ok {
+				continue
+			}
+
+			if bf.list.Has(np.Value) {
+				bf.scorer.Up()
 			}
 		}
 	}

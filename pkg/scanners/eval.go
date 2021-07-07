@@ -19,7 +19,7 @@ func NewEvalExpr(score float64) *EvalExpr {
 	}
 }
 
-// EnterNode is invoked at every node in hierarchy
+// EnterNode is invoked at every node in hierarchy.
 func (e *EvalExpr) EnterNode(w walker.Walkable) bool {
 	switch w.(node.Node).(type) {
 	case *expr.Eval:

@@ -13,6 +13,8 @@ type testCase struct {
 }
 
 func runCases(t *testing.T, builder func() Scanner, cases []testCase) {
+	t.Helper()
+
 	for _, tc := range cases {
 		s := builder()
 
@@ -29,6 +31,8 @@ func runCases(t *testing.T, builder func() Scanner, cases []testCase) {
 }
 
 func TestArrayCall(t *testing.T) {
+	t.Parallel()
+
 	builder := func() Scanner {
 		return NewArrayCall(1.0)
 	}

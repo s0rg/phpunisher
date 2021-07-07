@@ -21,7 +21,7 @@ func NewBadString(score float64) *BadString {
 	}
 }
 
-// countBadEscapes finds number or escaped symbols in string, that are not in (\n, \r, \t)
+// countBadEscapes finds number or escaped symbols in string, that are not in (\n, \r, \t).
 func countBadEscapes(s string) (result int) {
 	var afterSlash bool
 
@@ -72,11 +72,21 @@ func (bs *BadString) scoreUp(count int) {
 	}
 }
 
-// EnterNode is invoked at every node in hierarchy
+// EnterNode is invoked at every node in hierarchy.
 func (bs *BadString) EnterNode(w walker.Walkable) bool {
-	switch w.(node.Node).(type) {
+	n, ok := w.(node.Node)
+	if !ok {
+		return false
+	}
+
+	switch n.(type) {
 	case *scalar.String:
-		s := w.(*scalar.String)
+		s, ok := w.(*scalar.String)
+
+		if !ok {
+			return false
+		}
+
 		if bad := countBadEscapes(s.Value); bad > 0 {
 			bs.scoreUp(bad)
 		}

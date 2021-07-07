@@ -1,6 +1,7 @@
 package pipe
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -38,8 +39,10 @@ func (p *Pipe) reader() {
 	for f := range p.readQ {
 		if err := f.ReadBody(); err != nil {
 			log.Printf("reader: %s error: %v", f.Path, err)
+
 			continue
 		}
+
 		p.workQ <- f
 	}
 }
@@ -56,6 +59,7 @@ func (p *Pipe) match(path string) {
 	for i := 0; i < len(p.masks); i++ {
 		if ok, err := filepath.Match(p.masks[i], name); err == nil && ok {
 			p.readQ <- &File{Path: path}
+
 			break
 		}
 	}
@@ -78,17 +82,23 @@ func (p *Pipe) Walk(root string) error {
 	p.start()
 	defer p.stop()
 
-	return filepath.Walk(
+	if err := filepath.Walk(
 		root,
 		func(path string, f os.FileInfo, err error) error {
 			switch {
 			case err != nil:
+				return err
 			case f.IsDir():
 			case !f.Mode().IsRegular():
 			default:
 				p.match(path)
 			}
+
 			return nil
 		},
-	)
+	); err != nil {
+		return fmt.Errorf("walk error: %w", err)
+	}
+
+	return nil
 }

@@ -25,14 +25,19 @@ func NewArrayOperations(score float64) *ArrayOperations {
 	}
 }
 
-// EnterNode is invoked at every node in hierarchy
+// EnterNode is invoked at every node in hierarchy.
 func (a *ArrayOperations) EnterNode(w walker.Walkable) bool {
-	n := w.(node.Node)
+	n, ok := w.(node.Node)
+
+	if !ok {
+		return false
+	}
 
 	switch n.(type) {
 	case *expr.ArrayDimFetch:
 		a.arrOps++
 	case *scalar.Lnumber, *expr.Variable, *node.Identifier:
+		// skip declarations
 	default:
 		a.ops++
 	}

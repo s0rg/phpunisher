@@ -17,10 +17,10 @@ import (
 var (
 	GitHash    string
 	BuildDate  string
-	minScore   = flag.Float64("s", 0, "minimal score to threat file as suspect (default: 0)")
-	logVerbose = flag.Bool("v", false, "show scan details for found suspects")
-	scanMasks  = flag.String("m", "*.php*", "scan masks, use ';' as separator")
-	numWorkers = flag.Int("w", 2, "workers count (scan parallelism)")
+	minScore   = flag.Float64("score", 0, "minimal score to threat file as suspect (default: 0)")
+	logVerbose = flag.Bool("verbose", false, "show scan details for found suspects")
+	scanMasks  = flag.String("mask", "*.php*", "scan masks, use ';' as separator")
+	numWorkers = flag.Int("workers", 2, "workers count (scan parallelism)")
 )
 
 type score struct {
@@ -28,7 +28,7 @@ type score struct {
 	Score   float64
 }
 
-type scores []score
+type scores []*score
 
 func (s scores) Len() int           { return len(s) }
 func (s scores) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
@@ -55,7 +55,7 @@ func buildScanners() []scanners.Scanner {
 
 func makeHandler(callback func(path string, s scores)) func(f *pipe.File) {
 	return func(f *pipe.File) {
-		parser := php7.NewParser(&f.Body, f.Path)
+		parser := php7.NewParser(f.Body.Bytes(), f.Path)
 		parser.Parse()
 
 		for _, e := range parser.GetErrors() {
@@ -65,6 +65,7 @@ func makeHandler(callback func(path string, s scores)) func(f *pipe.File) {
 		root := parser.GetRootNode()
 		if root == nil {
 			log.Printf("scanner: no root node for %s", f.Path)
+
 			return
 		}
 
@@ -74,7 +75,7 @@ func makeHandler(callback func(path string, s scores)) func(f *pipe.File) {
 			root.Walk(s)
 
 			if sc := s.Score(); sc > 0 {
-				details = append(details, score{
+				details = append(details, &score{
 					Scanner: s.Name(),
 					Score:   sc,
 				})
@@ -118,9 +119,11 @@ func main() {
 		report.Println(sb.String())
 	}
 
-	handler := makeHandler(reportSuspect)
-
-	p := pipe.New(*numWorkers, strings.Split(*scanMasks, ";"), handler)
+	p := pipe.New(
+		*numWorkers,
+		strings.Split(*scanMasks, ";"),
+		makeHandler(reportSuspect),
+	)
 	if err := p.Walk(args[0]); err != nil {
 		log.Fatal(err)
 	}

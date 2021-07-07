@@ -8,6 +8,8 @@ import (
 )
 
 func TestEval(t *testing.T) {
+	t.Parallel()
+
 	builder := func() Scanner {
 		return NewEvalExpr(1.0)
 	}
