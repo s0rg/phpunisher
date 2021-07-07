@@ -9,16 +9,16 @@ Based on great [php-parser](https://github.com/z7zmey/php-parser) library.
 
 # flags
 ```
--m string
+-mask string
    scan masks, use ';' as separator (ie: *.php;*.inc) (default "*.php*")
 
--s float
+-score float
    minimal score to threat file as suspect (default 0)
-  
--v 
+
+-verbose
    show scan details for found suspects
-  
--w int
+
+-workers int
    workers count (scan parallelism) (default 2)
 ```
 
