@@ -5,6 +5,8 @@ import "testing"
 const needle = "needle"
 
 func TestAdd(t *testing.T) {
+	t.Parallel()
+
 	s := make(Strings)
 
 	if s.Has(needle) {
@@ -25,7 +27,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestFromList(t *testing.T) {
-	const needle = "needle"
+	t.Parallel()
 
 	s := make(Strings)
 
