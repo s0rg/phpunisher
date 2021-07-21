@@ -22,17 +22,15 @@ jobs:
       - uses: actions/setup-go@v2
       - name: test-cover
         run: make test-cover
-      - name: install-reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
-          chmod u+x cc-test-reporter
-          ./cc-test-reporter before-build
-          ./cc-test-reporter format-coverage test.cover --input-type gocov test.cover --prefix github.com/s0rg/phpunisher
-      - name: after-build
+      - name: send-report
         with:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
+          chmod u+x cc-test-reporter
+          ./cc-test-reporter before-build
+          ./cc-test-reporter format-coverage test.cover --input-type gocov test.cover --prefix github.com/s0rg/phpunisher
           ./cc-test-reporter upload-coverage
 
