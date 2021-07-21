@@ -32,5 +32,5 @@ jobs:
         run: |
           make cover-ci
         env:
-          CC_TEST_REPORTER_ID: ${{ ci.CC_TEST_REPORTER_ID }}
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
