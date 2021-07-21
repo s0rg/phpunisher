@@ -28,8 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        env:
-          CC_TEST_REPORTER_ID: dbb2aab87b7c2ecd3b8fdfa4f0fb2a950359e7c03e532cdbab80f9aa8592c521
-        with:
-          coverageCommand: make cover-ci
+      - name: Make tests-cover report
+      run: |
+        make cover-ci
+      env:
+        CC_TEST_REPORTER_ID: ${{ ci.CC_TEST_REPORTER_ID }}
 
