@@ -31,13 +31,3 @@ jobs:
           ./cc-test-reporter format-coverage --input-type gocov test.cover
           ./cc-test-reporter upload-coverage
 
-  coverage:
-    needs: [ test ]
-    name: coverage
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Make tests-cover report
-        run: |
-          make cover-ci
-
