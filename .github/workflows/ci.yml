@@ -29,5 +29,5 @@ jobs:
           chmod u+x cc-test-reporter
           ./cc-test-reporter before-build
           ./cc-test-reporter format-coverage test.cover --input-type gocov test.cover --prefix github.com/s0rg/phpunisher
-          ./cc-test-reporter upload-coverage
+          ./cc-test-reporter upload-coverage -r ${{ secrets.CC_TEST_REPORTER_ID }}
 
