@@ -1,5 +1,6 @@
 [![Build](https://github.com/s0rg/phpunisher/workflows/ci/badge.svg)](https://github.com/s0rg/phpunisher/actions?query=workflow%3Aci)
-[![Maintainability](https://api.codeclimate.com/v1/badges/950783b2e739db26e0ed/maintainability)](https://codeclimate.com/github/s0rg/phpunisher/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a495e449a4b9190b6571/maintainability)](https://codeclimate.com/github/s0rg/phpunisher/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a495e449a4b9190b6571/test_coverage)](https://codeclimate.com/github/s0rg/phpunisher/test_coverage)
 
 # phpunisher
 
