@@ -29,9 +29,10 @@ jobs:
           ./cc-test-reporter before-build
           ./cc-test-reporter format-coverage test.cover --input-type gocov test.cover --prefix github.com/s0rg/phpunisher
       - name: after-build
-        with: # Set the secret as an input
+        with:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        run: ./cc-test-reporter upload-coverage
+        run: |
+          ./cc-test-reporter upload-coverage
 
