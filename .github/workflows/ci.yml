@@ -20,7 +20,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
-      - run: make test
+      - name: test-cover
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        run: |
+          make test-cover
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
+          ./cc-test-reporter before-build
+          ./cc-test-reporter format-coverage --input-type gocov test.cover
+          ./cc-test-reporter upload-coverage
 
   coverage:
     needs: [ test ]
@@ -31,6 +39,4 @@ jobs:
       - name: Make tests-cover report
         run: |
           make cover-ci
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 

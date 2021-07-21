@@ -2,10 +2,10 @@ BIN=phpunisher-bin
 CMD=./cmd/phpunisher
 COVER=test.cover
 
-GO_HTML_COV             := ./coverage.html
-GOLANG_DOCKER_IMAGE     := golang:1.16
+GO_HTML_COV         := ./coverage.html
+GOLANG_DOCKER_IMAGE := golang:1.16
 CC_TEST_REPORTER_ID	:= ${CC_TEST_REPORTER_ID}
-CC_PREFIX		:= github.com/mottaquikarim/esquerydsl
+CC_PREFIX		    := github.com/s0rg/phpunisher
 
 GIT_HASH=`git rev-parse --short HEAD`
 BUILD_DATE=`date +%FT%T%z`
