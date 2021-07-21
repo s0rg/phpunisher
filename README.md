@@ -1,4 +1,8 @@
+[![Build](https://github.com/s0rg/phpunisher/workflows/ci/badge.svg)](https://github.com/s0rg/phpunisher/actions?query=workflow%3Aci)
+[![Maintainability](https://api.codeclimate.com/v1/badges/950783b2e739db26e0ed/maintainability)](https://codeclimate.com/github/s0rg/phpunisher/maintainability)
+
 # phpunisher
+
 Finds code pieces, that looks like viruses/trojans inside php source code.
 Based on great [php-parser](https://github.com/z7zmey/php-parser) library.
 
