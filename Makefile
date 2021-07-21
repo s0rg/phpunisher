@@ -2,11 +2,6 @@ BIN=phpunisher-bin
 CMD=./cmd/phpunisher
 COVER=test.cover
 
-GO_HTML_COV         := ./coverage.html
-GOLANG_DOCKER_IMAGE := golang:1.16
-CC_TEST_REPORTER_ID	:= ${CC_TEST_REPORTER_ID}
-CC_PREFIX		    := github.com/s0rg/phpunisher
-
 GIT_HASH=`git rev-parse --short HEAD`
 BUILD_DATE=`date +%FT%T%z`
 
@@ -29,24 +24,6 @@ test:
 
 test-cover: test
 	go tool cover -func="${COVER}"
-
-test-ci:
-	docker run -w /app -v ${ROOT}:/app ${GOLANG_DOCKER_IMAGE} go test ./... -coverprofile=${COVER}
-	docker run -w /app -v ${ROOT}:/app ${GOLANG_DOCKER_IMAGE} go tool cover -html=${COVER} -o ${GO_HTML_COV}
-
-_before-cc:
-	docker run -w /app -v ${ROOT}:/app ${GOLANG_DOCKER_IMAGE} /bin/bash -c \
-		"curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter"
-
-	docker run -w /app -v ${ROOT}:/app -e CC_TEST_REPORTER_ID=${CC_TEST_REPORTER_ID} \
-		${GOLANG_DOCKER_IMAGE} ./cc-test-reporter before-build
-
-_after-cc:
-	docker run -w /app -v ${ROOT}:/app \
-		-e CC_TEST_REPORTER_ID=${CC_TEST_REPORTER_ID} \
-		${GOLANG_DOCKER_IMAGE} ./cc-test-reporter after-build --prefix ${PREFIX}
-
-cover-ci: _before-cc test-ci _after-cc
 
 lint:
 	golangci-lint run
