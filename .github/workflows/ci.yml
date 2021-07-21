@@ -29,7 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Make tests-cover report
-        run: make cover-ci
+        run: |
+          make cover-ci
         env:
           CC_TEST_REPORTER_ID: ${{ ci.CC_TEST_REPORTER_ID }}
 
