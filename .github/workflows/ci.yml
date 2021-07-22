@@ -20,11 +20,6 @@ jobs:
     environment:
       name: ci
     steps:
-      - name: setup reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
-          chmod u+x cc-test-reporter
-          ./cc-test-reporter before-build
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
       - name: test-cover
@@ -33,6 +28,9 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
+          chmod u+x cc-test-reporter
+          ./cc-test-reporter before-build
           ./cc-test-reporter format-coverage test.cover --input-type gocov --prefix github.com/${{ github.repository }}
           ./cc-test-reporter upload-coverage
 
