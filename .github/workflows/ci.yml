@@ -23,6 +23,8 @@ jobs:
       - name: test-cover
         run: make test-cover
       - name: send-report
+        with:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
