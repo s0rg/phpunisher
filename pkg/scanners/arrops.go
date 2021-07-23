@@ -13,7 +13,7 @@ const (
 )
 
 type ArrayOperations struct {
-	stub
+	visitor
 	step   float64
 	arrOps int
 	ops    int

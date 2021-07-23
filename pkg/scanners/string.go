@@ -11,7 +11,7 @@ const (
 )
 
 type BadString struct {
-	stub
+	visitor
 	scorer
 }
 

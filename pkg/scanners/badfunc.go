@@ -74,7 +74,7 @@ var (
 )
 
 type BadFunc struct {
-	stub
+	visitor
 	scorer
 	list set.Strings
 }

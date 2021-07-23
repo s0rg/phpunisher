@@ -2,18 +2,26 @@ package pipe
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io/fs"
 )
 
 type File struct {
+	fsys fs.FS
 	Path string
 	Body bytes.Buffer
 }
 
-func (f *File) ReadBody() (err error) {
+func FileReader(path string, fsys fs.FS) *File {
+	return &File{
+		fsys: fsys,
+		Path: path,
+	}
+}
+
+func (f *File) ReadFull() (err error) {
 	var b []byte
 
-	if b, err = ioutil.ReadFile(f.Path); err == nil {
+	if b, err = fs.ReadFile(f.fsys, f.Path); err == nil {
 		_, err = f.Body.Write(b)
 	}
 

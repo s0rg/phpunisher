@@ -10,7 +10,7 @@ const arrcallName = "array-call"
 
 type ArrayCall struct {
 	prev node.Node
-	stub
+	visitor
 	scorer
 }
 

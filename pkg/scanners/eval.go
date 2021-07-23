@@ -9,7 +9,7 @@ import (
 const evalName = "eval-expr"
 
 type EvalExpr struct {
-	stub
+	visitor
 	scorer
 }
 

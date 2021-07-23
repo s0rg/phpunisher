@@ -124,7 +124,10 @@ func main() {
 		strings.Split(*scanMasks, ";"),
 		makeHandler(reportSuspect),
 	)
-	if err := p.Walk(args[0]); err != nil {
+
+	root := args[0]
+
+	if err := p.Walk(".", os.DirFS(root)); err != nil {
 		log.Fatal(err)
 	}
 }

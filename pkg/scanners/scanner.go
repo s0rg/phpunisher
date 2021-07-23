@@ -10,10 +10,10 @@ type Scanner interface {
 	Name() string
 }
 
-type stub struct{}
+type visitor struct{}
 
-func (s *stub) LeaveNode(n walker.Walkable)                  {}
-func (s *stub) EnterChildNode(key string, w walker.Walkable) {}
-func (s *stub) LeaveChildNode(key string, w walker.Walkable) {}
-func (s *stub) EnterChildList(key string, w walker.Walkable) {}
-func (s *stub) LeaveChildList(key string, w walker.Walkable) {}
+func (v *visitor) LeaveNode(walker.Walkable)              {}
+func (v *visitor) EnterChildNode(string, walker.Walkable) {}
+func (v *visitor) LeaveChildNode(string, walker.Walkable) {}
+func (v *visitor) EnterChildList(string, walker.Walkable) {}
+func (v *visitor) LeaveChildList(string, walker.Walkable) {}

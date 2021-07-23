@@ -10,7 +10,7 @@ const sincName = "single-include"
 
 type SingleInclude struct {
 	root *node.Root
-	stub
+	visitor
 	scorer
 }
 
