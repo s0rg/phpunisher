@@ -23,25 +23,6 @@ var (
 	numWorkers = flag.Int("workers", 2, "workers count (scan parallelism)")
 )
 
-type score struct {
-	Scanner string
-	Score   float64
-}
-
-type scores []*score
-
-func (s scores) Len() int           { return len(s) }
-func (s scores) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
-func (s scores) Less(i, j int) bool { return s[i].Score < s[j].Score }
-
-func (s scores) Sum() (rv float64) {
-	for i := 0; i < len(s); i++ {
-		rv += s[i].Score
-	}
-
-	return
-}
-
 func buildScanners() []scanners.Scanner {
 	return []scanners.Scanner{
 		scanners.NewEvalExpr(0.2),
@@ -125,9 +106,7 @@ func main() {
 		makeHandler(reportSuspect),
 	)
 
-	root := args[0]
-
-	if err := p.Walk(".", os.DirFS(root)); err != nil {
+	if err := p.Walk(".", os.DirFS(args[0])); err != nil {
 		log.Fatal(err)
 	}
 }
