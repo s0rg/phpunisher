@@ -20,10 +20,7 @@ vet:
 	go vet ./...
 
 test:
-	go test -race -count 1 -v -coverprofile="${COVER}" ./...
-
-test-cover: test
-	go tool cover -func="${COVER}"
+	go test --tags=ci -race -count 1 -v -coverprofile="${COVER}" ./...
 
 lint:
 	golangci-lint run
