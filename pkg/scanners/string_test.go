@@ -22,6 +22,7 @@ func TestBadString(t *testing.T) {
 		{Nodes: []node.Node{scalar.NewString("hello")}},
 		{Nodes: []node.Node{scalar.NewString("hello\\")}},
 		{Nodes: []node.Node{scalar.NewString("hello\\\\")}},
+		{Nodes: []node.Node{scalar.NewString("hello\r\n\\\\")}},
 		{Nodes: []node.Node{scalar.NewString("hello\\\\foo\\")}, Want: 1.0},
 	}
 
