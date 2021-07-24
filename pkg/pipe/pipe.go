@@ -9,6 +9,7 @@ import (
 
 const bufSize int = 256
 
+// Pipe allows to create a 'pipeline' with several goroutines.
 type Pipe struct {
 	masks   []string
 	rq      chan *File
@@ -18,6 +19,7 @@ type Pipe struct {
 	handler func(f *File)
 }
 
+// New construct new Pipe.
 func New(workers int, masks []string, handler func(f *File)) *Pipe {
 	p := &Pipe{
 		masks:   masks,
@@ -77,6 +79,7 @@ func (p *Pipe) stop() {
 	p.wg.Wait()
 }
 
+// Walk runs pipeline for given path.
 func (p *Pipe) Walk(root string, fsys fs.FS) error {
 	p.start()
 	defer p.stop()

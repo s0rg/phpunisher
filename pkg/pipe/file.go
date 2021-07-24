@@ -5,12 +5,14 @@ import (
 	"io/fs"
 )
 
+// File represents a single file.
 type File struct {
 	fsys fs.FS
 	Path string
 	Body bytes.Buffer
 }
 
+// FileReader returns *File with given path in given FS.
 func FileReader(path string, fsys fs.FS) *File {
 	return &File{
 		fsys: fsys,
@@ -18,6 +20,7 @@ func FileReader(path string, fsys fs.FS) *File {
 	}
 }
 
+// ReadFull fills Body with file content.
 func (f *File) ReadFull() (err error) {
 	var b []byte
 
