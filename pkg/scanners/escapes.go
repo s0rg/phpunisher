@@ -7,16 +7,16 @@ import (
 )
 
 const (
-	badstrName = "bad-string"
+	badstrName = "escapes"
 )
 
-type BadString struct {
+type Escapes struct {
 	visitor
 	scorer
 }
 
-func NewBadString(score float64) *BadString {
-	return &BadString{
+func NewEscapes(score float64) *Escapes {
+	return &Escapes{
 		scorer: scorer{Step: score, name: badstrName},
 	}
 }
@@ -51,7 +51,7 @@ func min(a, b int) int {
 	return b
 }
 
-func (bs *BadString) scoreUp(count int) {
+func (bs *Escapes) scoreUp(count int) {
 	var ups int
 
 	switch {
@@ -73,7 +73,7 @@ func (bs *BadString) scoreUp(count int) {
 }
 
 // EnterNode is invoked at every node in hierarchy.
-func (bs *BadString) EnterNode(w walker.Walkable) bool {
+func (bs *Escapes) EnterNode(w walker.Walkable) bool {
 	n, ok := w.(node.Node)
 	if !ok {
 		return false

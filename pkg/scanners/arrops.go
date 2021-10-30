@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	arropsName            = "array-operations"
+	arropsName            = "array-ops"
 	maxArrOpsRate float64 = 0.2
 )
 

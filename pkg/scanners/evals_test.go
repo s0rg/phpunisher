@@ -11,7 +11,7 @@ func TestEval(t *testing.T) {
 	t.Parallel()
 
 	builder := func() Scanner {
-		return NewEvalExpr(1.0)
+		return NewEvals(1.0)
 	}
 
 	if builder().Name() != evalName {

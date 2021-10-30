@@ -6,21 +6,21 @@ import (
 	"github.com/z7zmey/php-parser/walker"
 )
 
-const evalName = "eval-expr"
+const evalName = "evals"
 
-type EvalExpr struct {
+type Evals struct {
 	visitor
 	scorer
 }
 
-func NewEvalExpr(score float64) *EvalExpr {
-	return &EvalExpr{
+func NewEvals(score float64) *Evals {
+	return &Evals{
 		scorer: scorer{Step: score, name: evalName},
 	}
 }
 
 // EnterNode is invoked at every node in hierarchy.
-func (e *EvalExpr) EnterNode(w walker.Walkable) bool {
+func (e *Evals) EnterNode(w walker.Walkable) bool {
 	switch w.(node.Node).(type) {
 	case *expr.Eval:
 		e.scorer.Up()

@@ -11,7 +11,7 @@ func TestBadString(t *testing.T) {
 	t.Parallel()
 
 	builder := func() Scanner {
-		return NewBadString(1.0)
+		return NewEscapes(1.0)
 	}
 
 	if builder().Name() != badstrName {
@@ -51,7 +51,7 @@ func TestBadStringScore(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		s := NewBadString(1.0)
+		s := NewEscapes(1.0)
 		s.scoreUp(tc.Bads)
 
 		if s.Score() < tc.Want {

@@ -23,20 +23,20 @@ var (
 	gitHash     string
 	gitVersion  string
 	buildDate   string
-	minScore    = flag.Float64("score", 0, "minimal score to threat file as suspect (default: 0)")
-	showReport  = flag.Bool("report", false, "show scan details for found suspects")
+	numWorkers  = flag.Int("workers", 2, "workers count (scan parallelism)")
+	showReport  = flag.Bool("report", false, "show report for found suspects")
 	showVersion = flag.Bool("version", false, "show version")
 	scanMasks   = flag.String("mask", "*.php*", "scan masks, use ';' as separator")
-	numWorkers  = flag.Int("workers", 2, "workers count (scan parallelism)")
+	minScore    = flag.Float64("score", 0, "minimal score to threat file as suspect")
 )
 
 func buildScanners() []scanners.Scanner {
 	return []scanners.Scanner{
-		scanners.NewEvalExpr(0.2),
-		scanners.NewSingleInclude(0.2),
+		scanners.NewFuncsBlacklist(0.1),
 		scanners.NewArrayCall(0.1),
-		scanners.NewBadString(0.1),
-		scanners.NewBadFunc(0.1),
+		scanners.NewEscapes(0.1),
+		scanners.NewEvals(0.2),
+		scanners.NewSingleInclude(0.2),
 		scanners.NewArrayOperations(0.2),
 	}
 }
@@ -101,10 +101,10 @@ func main() {
 			var report []string
 
 			for _, d := range s {
-				report = append(report, fmt.Sprintf("%s: %.1f", d.Scanner, d.Score))
+				report = append(report, fmt.Sprintf("(%s:%.1f)", d.Scanner, d.Score))
 			}
 
-			sb.WriteString(fmt.Sprintf(" [%s total: %.1f]", strings.Join(report, " "), s.Sum()))
+			sb.WriteString(fmt.Sprintf(" [%s=%.1f]", strings.Join(report, "+"), s.Sum()))
 		}
 
 		fmt.Println(sb.String())

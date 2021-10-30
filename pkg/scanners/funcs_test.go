@@ -24,7 +24,7 @@ func TestBadFunc(t *testing.T) {
 	t.Parallel()
 
 	builder := func() Scanner {
-		return NewBadFunc(1.0)
+		return NewFuncsBlacklist(1.0)
 	}
 
 	if builder().Name() != bfName {

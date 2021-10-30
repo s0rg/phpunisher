@@ -9,7 +9,7 @@ import (
 	"github.com/s0rg/phpunisher/pkg/set"
 )
 
-const bfName = "bad-func"
+const bfName = "funcs"
 
 var (
 	badFuncs = []string{
@@ -73,14 +73,14 @@ var (
 	}
 )
 
-type BadFunc struct {
+type FuncsBlacklist struct {
 	visitor
 	scorer
 	list set.Strings
 }
 
-func NewBadFunc(score float64) *BadFunc {
-	bf := &BadFunc{
+func NewFuncsBlacklist(score float64) *FuncsBlacklist {
+	bf := &FuncsBlacklist{
 		scorer: scorer{Step: score, name: bfName},
 		list:   make(set.Strings),
 	}
@@ -91,7 +91,7 @@ func NewBadFunc(score float64) *BadFunc {
 }
 
 // EnterNode is invoked at every node in hierarchy.
-func (bf *BadFunc) EnterNode(w walker.Walkable) bool {
+func (bf *FuncsBlacklist) EnterNode(w walker.Walkable) bool {
 	n, ok := w.(node.Node)
 	if !ok {
 		return false
