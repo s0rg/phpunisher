@@ -19,10 +19,9 @@ linters:
     - gofumpt
     - gci
     - testpackage
-    - cyclop
     - goerr113
-    - funlen
     - tagliatelle
+    - forbidigo
     # deprecated
     - interfacer
     - maligned
@@ -34,4 +33,3 @@ output:
   format: 'colored-line-number'
   print-issued-lines: true
   print-linter-name: true
-

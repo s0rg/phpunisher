@@ -1,4 +1,4 @@
-// +build !ci
+//go:build !test
 
 package main
 
@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sort"
 	"strings"
 
 	"github.com/z7zmey/php-parser/php7"
@@ -16,13 +15,19 @@ import (
 	"github.com/s0rg/phpunisher/pkg/scanners"
 )
 
+const (
+	appName = "PHPunisher"
+)
+
 var (
-	GitHash    string
-	BuildDate  string
-	minScore   = flag.Float64("score", 0, "minimal score to threat file as suspect (default: 0)")
-	logVerbose = flag.Bool("verbose", false, "show scan details for found suspects")
-	scanMasks  = flag.String("mask", "*.php*", "scan masks, use ';' as separator")
-	numWorkers = flag.Int("workers", 2, "workers count (scan parallelism)")
+	gitHash     string
+	gitVersion  string
+	buildDate   string
+	minScore    = flag.Float64("score", 0, "minimal score to threat file as suspect (default: 0)")
+	showReport  = flag.Bool("report", false, "show scan details for found suspects")
+	showVersion = flag.Bool("version", false, "show version")
+	scanMasks   = flag.String("mask", "*.php*", "scan masks, use ';' as separator")
+	numWorkers  = flag.Int("workers", 2, "workers count (scan parallelism)")
 )
 
 func buildScanners() []scanners.Scanner {
@@ -73,33 +78,36 @@ func makeHandler(callback func(path string, s scores)) func(f *pipe.File) {
 
 func main() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
-	log.Println("git", GitHash, "build at", BuildDate)
 	flag.Parse()
 
-	args := flag.Args()
-	if len(args) != 1 {
-		flag.Usage()
-		os.Exit(1)
+	if *showVersion {
+		fmt.Println(appName, "git:", gitVersion, gitHash, "build at", buildDate)
+
+		return
 	}
 
-	verbose := *logVerbose
-	report := log.New(os.Stdout, "", 0)
+	if flag.NArg() != 1 {
+		flag.Usage()
+
+		return
+	}
 
 	reportSuspect := func(path string, s scores) {
 		var sb strings.Builder
 
 		sb.WriteString(path)
 
-		if verbose {
-			sb.WriteString(fmt.Sprintf(" [%.1f]\n", s.Sum()))
-			sort.Sort(s)
+		if *showReport {
+			var report []string
 
 			for _, d := range s {
-				sb.WriteString(fmt.Sprintf("\t%s %.1f\n", d.Scanner, d.Score))
+				report = append(report, fmt.Sprintf("%s: %.1f", d.Scanner, d.Score))
 			}
+
+			sb.WriteString(fmt.Sprintf(" [%s total: %.1f]", strings.Join(report, " "), s.Sum()))
 		}
 
-		report.Println(sb.String())
+		fmt.Println(sb.String())
 	}
 
 	p := pipe.New(
@@ -108,7 +116,7 @@ func main() {
 		makeHandler(reportSuspect),
 	)
 
-	if err := p.Walk(".", os.DirFS(args[0])); err != nil {
+	if err := p.Walk(".", os.DirFS(flag.Arg(0))); err != nil {
 		log.Fatal(err)
 	}
 }

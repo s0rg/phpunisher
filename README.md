@@ -10,7 +10,7 @@ Based on great [php-parser](https://github.com/z7zmey/php-parser) library.
 
 # usage
 ```
-~# phpunisher [flags] [/path/to/php-code-dir]
+~# phpunisher [flags] /path/to/php/code
 ```
 
 # flags
@@ -36,4 +36,3 @@ Based on great [php-parser](https://github.com/z7zmey/php-parser) library.
 - **eval-expr** scans for eval expression
 - **single-include** notifies if whole file is single include instruction
 - **bad-string** notifies if string literal has more than two escaped symbols
-

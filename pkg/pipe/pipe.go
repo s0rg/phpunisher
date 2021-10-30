@@ -9,7 +9,7 @@ import (
 
 const bufSize int = 256
 
-// Pipe allows to create a 'pipeline' with several goroutines.
+// Pipe allows to create a file-processing pipeline.
 type Pipe struct {
 	masks   []string
 	rq      chan *File

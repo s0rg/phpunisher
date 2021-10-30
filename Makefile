@@ -1,30 +1,35 @@
-BIN=phpunisher-bin
+SHELL=/bin/bash
+
+BIN=bin/phpunisher
 CMD=./cmd/phpunisher
-COVER=test.cover
+COP=test.coverage
 
-GIT_HASH=`git rev-parse --short HEAD`
-BUILD_DATE=`date +%FT%T%z`
+GIT_TAG=`git describe --abbrev=0 2>/dev/null || echo -n "no-tag"`
+GIT_HASH=`git rev-parse --short HEAD 2>/dev/null || echo -n "no-git"`
+BUILD_AT=`date +%FT%T%z`
 
-LDFLAGS=-X main.GitHash=${GIT_HASH} -X main.BuildDate=${BUILD_DATE}
-LDFLAGS_REL=-w -s ${LDFLAGS}
+LDFLAGS=-w -s -X main.gitHash=${GIT_HASH} -X main.buildDate=${BUILD_AT} -X main.gitVersion=${GIT_TAG}
 
-.PHONY: clean build
+export CGO_ENABLED=0
+export GOARCH=amd64
+
+.PHONY: build
 
 build: vet
 	go build -ldflags "${LDFLAGS}" -o "${BIN}" "${CMD}"
 
-release: vet
-	go build -ldflags "${LDFLAGS_REL}" -o "${BIN}" "${CMD}"
-
 vet:
 	go vet ./...
 
-test:
-	go test --tags=ci -race -count 1 -v -coverprofile="${COVER}" ./...
+test: vet
+	CGO_ENABLED=1 go test -race -count 1 -v -tags=test -coverprofile="${COP}" ./...
+
+test-cover: test
+	go tool cover -func="${COP}"
 
 lint:
 	golangci-lint run
 
 clean:
 	[ -f "${BIN}" ] && rm "${BIN}"
-	[ -f "${COVER}" ] && rm "${COVER}"
+	[ -f "${COP}" ] && rm "${COP}"
