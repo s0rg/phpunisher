@@ -1,0 +1,25 @@
+# .goreleaser.yml
+project_name: phpunisher
+before:
+  hooks:
+    - go mod vendor
+builds:
+  - env: [CGO_ENABLED=0]
+    ldflags:
+      - -s -w
+      - -X main.gitHash={{.ShortCommit}}
+      - -X main.gitVersion={{.Tag}}
+      - -X main.buildDate={{.Date}}
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    id: "phpunisher"
+    dir: .
+    main: ./cmd/phpunisher

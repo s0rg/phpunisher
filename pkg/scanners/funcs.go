@@ -70,6 +70,8 @@ var (
 		"call_user_func",
 		"register_tick_function",
 		"register_shutdown_function",
+		"fsockopen",
+		"extract",
 	}
 )
 

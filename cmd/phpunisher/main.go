@@ -36,6 +36,7 @@ func buildScanners() []scanners.Scanner {
 		scanners.NewArrayCall(0.1),
 		scanners.NewEscapes(0.1),
 		scanners.NewEvals(0.2),
+		scanners.NewLongStrings(0.2),
 		scanners.NewSingleInclude(0.2),
 		scanners.NewArrayOperations(0.2),
 	}
@@ -46,27 +47,18 @@ func makeHandler(callback func(path string, s scores)) func(f *pipe.File) {
 		parser := php7.NewParser(f.Body.Bytes(), f.Path)
 		parser.Parse()
 
-		for _, e := range parser.GetErrors() {
-			log.Printf("scanner: parse error on %s: %v", f.Path, e)
-		}
-
-		root := parser.GetRootNode()
-		if root == nil {
-			log.Printf("scanner: no root node for %s", f.Path)
-
-			return
-		}
-
 		details := scores{}
 
-		for _, s := range buildScanners() {
-			root.Walk(s)
+		if root := parser.GetRootNode(); root != nil {
+			for _, s := range buildScanners() {
+				root.Walk(s)
 
-			if sc := s.Score(); sc > 0 {
-				details = append(details, &score{
-					Scanner: s.Name(),
-					Score:   sc,
-				})
+				if sc := s.Score(); sc > 0 {
+					details = append(details, &score{
+						Scanner: s.Name(),
+						Score:   sc,
+					})
+				}
 			}
 		}
 
