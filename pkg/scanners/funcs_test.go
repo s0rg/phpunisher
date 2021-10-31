@@ -23,8 +23,10 @@ func buildFuncNodes(fn string) []node.Node {
 func TestBadFunc(t *testing.T) {
 	t.Parallel()
 
+	blist := []string{"str_rot13", "base64_decode"}
+
 	builder := func() Scanner {
-		return NewFuncsBlacklist(1.0)
+		return NewFuncsBlacklist(1.0, blist)
 	}
 
 	if builder().Name() != bfName {

@@ -11,7 +11,7 @@ func TestArrayOperations(t *testing.T) {
 	t.Parallel()
 
 	builder := func() Scanner {
-		return NewArrayOperations(1.0)
+		return NewArrayOperations(1.0, 0.2)
 	}
 
 	if builder().Name() != arropsName {

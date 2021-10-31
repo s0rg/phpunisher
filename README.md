@@ -20,6 +20,10 @@ Based on great [php-parser](https://github.com/z7zmey/php-parser) library.
 
 # flags
 ```
+-conf string
+    load scanners config from file
+-dump-conf
+    dump default scanners config to stdout
 -mask string
   	scan masks, use ';' as separator (default "*.php*")
 -report
@@ -29,16 +33,15 @@ Based on great [php-parser](https://github.com/z7zmey/php-parser) library.
 -version
   	show version
 -workers int
-  	workers count (scan parallelism)
+  	workers count (scan parallelism) (default 2)
 ```
 
 # scanners
 
 - **array-call** finds function calls from array elements
 - **array-ops** notifies if array operations amount is over 20% of all operations
-- **bad-php** invalid/malformed php code
 - **escapes** notifies if string literal has more than two escaped symbols
 - **evals** scans for eval expression
 - **funcs** scans againts 'bad function' list (based on [this article](https://habr.com/en/company/modesco/blog/472092))
+- **include** notifies if whole file is single include instruction
 - **long-str** notifies if string literal rather long (>64 chars) and does not contains any spaces (encoded blobs)
-- **single-include** notifies if whole file is single include instruction

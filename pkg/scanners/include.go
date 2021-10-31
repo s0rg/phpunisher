@@ -6,7 +6,7 @@ import (
 	"github.com/z7zmey/php-parser/walker"
 )
 
-const sincName = "single-include"
+const sincName = "include"
 
 type SingleInclude struct {
 	root *node.Root

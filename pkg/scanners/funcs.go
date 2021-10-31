@@ -11,83 +11,19 @@ import (
 
 const bfName = "funcs"
 
-var (
-	badFuncs = []string{
-		"exec",
-		"expect_popen",
-		"passthru",
-		"system",
-		"shell_exec",
-		"popen",
-		"proc_open",
-		"pcntl_exec",
-		"pcntl_alarm",
-		"pcntl_exec",
-		"pcntl_fork",
-		"pcntl_get_last_error",
-		"pcntl_getpriority",
-		"pcntl_setpriority",
-		"pcntl_signal",
-		"pcntl_signal_dispatch",
-		"pcntl_sigprocmask",
-		"pcntl_sigtimedwait",
-		"pcntl_sigwaitinfo",
-		"pcntl_strerror",
-		"pcntl_wait",
-		"pcntl_waitpid",
-		"pcntl_wexitstatus",
-		"pcntl_wifcontinued",
-		"pcntl_wifexited",
-		"pcntl_wifsignaled",
-		"pcntl_wifstopped",
-		"pcntl_wstopsig",
-		"pcntl_wtermsig",
-		"eval",
-		"assert",
-		"str_rot13",
-		"base64_decode",
-		"gzinflate",
-		"gzuncompress",
-		"preg_replace",
-		"chr",
-		"hexdec",
-		"decbin",
-		"bindec",
-		"ord",
-		"str_replace",
-		"substr",
-		"goto",
-		"unserialize",
-		"explode",
-		"strchr",
-		"strstr",
-		"chunk_split",
-		"strtok",
-		"addcslashes",
-		"runkit_function_rename",
-		"rename_function",
-		"call_user_func_array",
-		"call_user_func",
-		"register_tick_function",
-		"register_shutdown_function",
-		"fsockopen",
-		"extract",
-	}
-)
-
 type FuncsBlacklist struct {
 	visitor
 	scorer
 	list set.Strings
 }
 
-func NewFuncsBlacklist(score float64) *FuncsBlacklist {
+func NewFuncsBlacklist(score float64, list []string) *FuncsBlacklist {
 	bf := &FuncsBlacklist{
 		scorer: scorer{Step: score, name: bfName},
 		list:   make(set.Strings),
 	}
 
-	bf.list.FromList(badFuncs)
+	bf.list.FromList(list)
 
 	return bf
 }

@@ -11,8 +11,10 @@ import (
 func TestBadLongString(t *testing.T) {
 	t.Parallel()
 
+	const minCheckLen = 32
+
 	builder := func() Scanner {
-		return NewLongStrings(1.0)
+		return NewLongStrings(1.0, minCheckLen)
 	}
 
 	if builder().Name() != longstrName {

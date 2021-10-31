@@ -10,15 +10,15 @@ import (
 
 const (
 	longstrName = "long-str"
-	minCheckLen = 64
 )
 
 type LongStrings struct {
 	visitor
 	scorer
+	minLen int
 }
 
-func NewLongStrings(score float64) *LongStrings {
+func NewLongStrings(score float64, minLen int) *LongStrings {
 	return &LongStrings{
 		scorer: scorer{Step: score, name: longstrName},
 	}
@@ -39,7 +39,7 @@ func (ls *LongStrings) EnterNode(w walker.Walkable) bool {
 			return false
 		}
 
-		if len(s.Value) > minCheckLen && strings.Count(s.Value, " ") == 0 {
+		if len(s.Value) > ls.minLen && strings.Count(s.Value, " ") == 0 {
 			ls.scorer.Up()
 		}
 	}

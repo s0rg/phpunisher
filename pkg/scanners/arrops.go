@@ -8,20 +8,21 @@ import (
 )
 
 const (
-	arropsName            = "array-ops"
-	maxArrOpsRate float64 = 0.2
+	arropsName = "array-ops"
 )
 
 type ArrayOperations struct {
 	visitor
-	step   float64
-	arrOps int
-	ops    int
+	step    float64
+	maxRate float64
+	arrOps  int
+	ops     int
 }
 
-func NewArrayOperations(score float64) *ArrayOperations {
+func NewArrayOperations(score, rate float64) *ArrayOperations {
 	return &ArrayOperations{
-		step: score,
+		step:    score,
+		maxRate: rate,
 	}
 }
 
@@ -47,8 +48,8 @@ func (a *ArrayOperations) EnterNode(w walker.Walkable) bool {
 
 func (a *ArrayOperations) Score() float64 {
 	rate := float64(a.arrOps) / float64(a.ops)
-	if rate > maxArrOpsRate {
-		return a.step * ((rate - maxArrOpsRate) * 10.0)
+	if rate > a.maxRate {
+		return a.step * ((rate - a.maxRate) * 10.0)
 	}
 
 	return 0
