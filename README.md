@@ -11,11 +11,27 @@
 Finds code pieces, that looks like viruses/trojans inside php source code.
 Based on great [php-parser](https://github.com/z7zmey/php-parser) library.
 
+Tested on following public malware collections:
+- [https://github.com/nikicat/web-malware-collection](https://github.com/nikicat/web-malware-collection)
+- [https://github.com/nbs-system/php-malware-finder](https://github.com/nbs-system/php-malware-finder)
+
+- [https://github.com/mnutsch/Computer-Security---Malware](https://github.com/mnutsch/Computer-Security---Malware)
+- [https://github.com/sarn1/example-malware-vulnerabilities](https://github.com/sarn1/example-malware-vulnerabilities)
+- [https://github.com/AUCyberClub/php-malwares](https://github.com/AUCyberClub/php-malwares)
+- [https://github.com/nexylan/PHPAV](https://github.com/nexylan/PHPAV)
+- [https://github.com/marcocesarato/PHP-Malware-Collection](https://github.com/marcocesarato/PHP-Malware-Collection)
+- [https://github.com/ollyxar/php-malware-detector](https://github.com/ollyxar/php-malware-detector)
+- [https://github.com/planet-work/php-malware-scanner](https://github.com/planet-work/php-malware-scanner)
+- [https://github.com/bediger4000/php-malware-analysis](https://github.com/bediger4000/php-malware-analysis)
+- [https://github.com/Am0rphous/Malware](https://github.com/Am0rphous/Malware)
+- [https://github.com/harsxv/malware-bucket](https://github.com/harsxv/malware-bucket)
+
+
 # usage
 ```
 ~# cd /to/your/php/code
-~# phpunisher -report .                  # to see report
-~# phpunisher . | xargs -d "\n" -n 1 rm  # to remove suspicios
+~# phpunisher -report                  # to see report
+~# phpunisher | xargs -d "\n" -n 1 rm  # to remove suspicios
 ```
 
 # flags
