@@ -1,19 +1,21 @@
 # .goreleaser.yml
 project_name: phpunisher
+
 before:
   hooks:
-    - go mod vendor
+    - go mod tidy
+
 builds:
   - env: [CGO_ENABLED=0]
     ldflags:
       - -s -w
-      - -X main.gitHash={{.ShortCommit}}
-      - -X main.gitVersion={{.Tag}}
       - -X main.buildDate={{.Date}}
+      - -X main.gitVersion={{.Tag}}
+      - -X main.gitHash={{.ShortCommit}}
     goos:
       - linux
-      - windows
       - darwin
+      - windows
     goarch:
       - amd64
       - arm64
@@ -23,3 +25,23 @@ builds:
     id: "phpunisher"
     dir: .
     main: ./cmd/phpunisher
+    hooks:
+      post: 'upx --brute {{ .Path }}'
+
+archives:
+  - format: tar.gz
+    replacements:
+      386: i386
+      amd64: x86_64
+    format_overrides:
+      - goos: windows
+        format: zip
+
+changelog:
+  filters:
+    exclude:
+      - '^chore'
+      - '^docs'
+      - '^refactor'
+      - '^style'
+      - '^test'
