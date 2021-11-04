@@ -62,6 +62,7 @@ func TestEscapesScore(t *testing.T) {
 
 func TestEscapesBadValue(t *testing.T) {
 	t.Parallel()
+
 	s := NewEscapes(1.0)
 
 	if s.EnterNode(&nonNode{}) {
