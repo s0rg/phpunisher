@@ -22,6 +22,7 @@ linters:
     - tagliatelle
     - forbidigo
     - forcetypeassert
+    - varnamelen
     # deprecated
     - interfacer
     - maligned
