@@ -21,7 +21,12 @@ func NewEvals(score float64) *Evals {
 
 // EnterNode is invoked at every node in hierarchy.
 func (e *Evals) EnterNode(w walker.Walkable) bool {
-	switch w.(node.Node).(type) {
+	n, ok := w.(node.Node)
+	if !ok {
+		return false
+	}
+
+	switch n.(type) {
 	case *expr.Eval:
 		e.scorer.Up()
 	}

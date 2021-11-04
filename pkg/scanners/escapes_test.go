@@ -7,7 +7,7 @@ import (
 	"github.com/z7zmey/php-parser/node/scalar"
 )
 
-func TestBadString(t *testing.T) {
+func TestEscapes(t *testing.T) {
 	t.Parallel()
 
 	builder := func() Scanner {
@@ -15,7 +15,7 @@ func TestBadString(t *testing.T) {
 	}
 
 	if builder().Name() != badstrName {
-		t.Fatal("invalid name")
+		t.Error("invalid name")
 	}
 
 	testCases := []testCase{
@@ -29,7 +29,7 @@ func TestBadString(t *testing.T) {
 	runCases(t, builder, testCases)
 }
 
-func TestBadStringScore(t *testing.T) {
+func TestEscapesScore(t *testing.T) {
 	t.Parallel()
 
 	type scoreCase struct {
@@ -55,7 +55,16 @@ func TestBadStringScore(t *testing.T) {
 		s.scoreUp(tc.Bads)
 
 		if s.Score() < tc.Want {
-			t.Fatalf("case failed: %d want: %.2f got: %.2f", tc.Bads, tc.Want, s.Score())
+			t.Errorf("case failed: %d want: %.2f got: %.2f", tc.Bads, tc.Want, s.Score())
 		}
+	}
+}
+
+func TestEscapesBadValue(t *testing.T) {
+	t.Parallel()
+	s := NewEscapes(1.0)
+
+	if s.EnterNode(&nonNode{}) {
+		t.Error("enters bad node")
 	}
 }

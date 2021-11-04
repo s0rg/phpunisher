@@ -15,7 +15,7 @@ func TestEval(t *testing.T) {
 	}
 
 	if builder().Name() != evalName {
-		t.Fatal("invalid name")
+		t.Error("invalid name")
 	}
 
 	testCases := []testCase{
@@ -31,4 +31,14 @@ func TestEval(t *testing.T) {
 	}
 
 	runCases(t, builder, testCases)
+}
+
+func TestEvalsBadValue(t *testing.T) {
+	t.Parallel()
+
+	s := NewEvals(1.0)
+
+	if s.EnterNode(&nonNode{}) {
+		t.Error("enters bad node")
+	}
 }

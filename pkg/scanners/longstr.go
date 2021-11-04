@@ -33,13 +33,9 @@ func (ls *LongStrings) EnterNode(w walker.Walkable) bool {
 
 	switch n.(type) {
 	case *scalar.String:
-		s, ok := w.(*scalar.String)
+		s := w.(*scalar.String).Value
 
-		if !ok {
-			return false
-		}
-
-		if len(s.Value) > ls.minLen && strings.Count(s.Value, " ") == 0 {
+		if len(s) > ls.minLen && strings.Count(s, " ") == 0 {
 			ls.scorer.Up()
 		}
 	}

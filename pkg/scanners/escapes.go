@@ -81,13 +81,7 @@ func (bs *Escapes) EnterNode(w walker.Walkable) bool {
 
 	switch n.(type) {
 	case *scalar.String:
-		s, ok := w.(*scalar.String)
-
-		if !ok {
-			return false
-		}
-
-		if bad := countBadEscapes(s.Value); bad > 0 {
+		if bad := countBadEscapes(w.(*scalar.String).Value); bad > 0 {
 			bs.scoreUp(bad)
 		}
 	}

@@ -13,7 +13,7 @@ func TestScorerStep(t *testing.T) {
 		s.Up()
 
 		if s.Score() < float64(i) {
-			t.Fatal("scorer - not up")
+			t.Error("scorer - not up")
 		}
 	}
 }
@@ -25,6 +25,6 @@ func TestScorerName(t *testing.T) {
 
 	s := scorer{name: n}
 	if s.Name() != n {
-		t.Fatal("unexpected name")
+		t.Error("unexpected name")
 	}
 }

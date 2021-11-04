@@ -15,7 +15,7 @@ func TestArrayOperations(t *testing.T) {
 	}
 
 	if builder().Name() != arropsName {
-		t.Fatal("invalid name")
+		t.Error("invalid name")
 	}
 
 	testCases := []testCase{
@@ -31,4 +31,14 @@ func TestArrayOperations(t *testing.T) {
 	}
 
 	runCases(t, builder, testCases)
+}
+
+func TestArrayOpsBadValue(t *testing.T) {
+	t.Parallel()
+
+	s := NewArrayOperations(1.0, 0.2)
+
+	if s.EnterNode(&nonNode{}) {
+		t.Error("enters bad node")
+	}
 }

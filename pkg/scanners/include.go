@@ -23,19 +23,13 @@ func NewSingleInclude(score float64) *SingleInclude {
 // EnterNode is invoked at every node in hierarchy.
 func (s *SingleInclude) EnterNode(w walker.Walkable) bool {
 	n, ok := w.(node.Node)
-
 	if !ok {
 		return false
 	}
 
 	switch n.(type) {
 	case *node.Root:
-		r, ok := w.(*node.Root)
-		if !ok {
-			return false
-		}
-
-		s.root = r
+		s.root = w.(*node.Root)
 	case *expr.Include:
 		if s.root != nil && len(s.root.Stmts) == 1 {
 			s.scorer.Up()

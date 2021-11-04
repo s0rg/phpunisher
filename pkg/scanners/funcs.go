@@ -37,12 +37,7 @@ func (bf *FuncsBlacklist) EnterNode(w walker.Walkable) bool {
 
 	switch n.(type) {
 	case *expr.FunctionCall:
-		fc, ok := w.(*expr.FunctionCall)
-		if !ok {
-			return false
-		}
-
-		nm, ok := fc.Function.(*name.Name)
+		nm, ok := w.(*expr.FunctionCall).Function.(*name.Name)
 		if !ok {
 			return false
 		}

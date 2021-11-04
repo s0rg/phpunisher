@@ -8,7 +8,7 @@ import (
 	"github.com/z7zmey/php-parser/node/scalar"
 )
 
-func TestBadLongString(t *testing.T) {
+func TestLongStrings(t *testing.T) {
 	t.Parallel()
 
 	const minCheckLen = 32
@@ -18,7 +18,7 @@ func TestBadLongString(t *testing.T) {
 	}
 
 	if builder().Name() != longstrName {
-		t.Fatal("invalid name")
+		t.Error("invalid name")
 	}
 
 	var ballast = strings.Repeat("A", minCheckLen-1)
@@ -31,4 +31,14 @@ func TestBadLongString(t *testing.T) {
 	}
 
 	runCases(t, builder, testCases)
+}
+
+func TestLongStringsBadValue(t *testing.T) {
+	t.Parallel()
+
+	s := NewLongStrings(1.0, 1)
+
+	if s.EnterNode(&nonNode{}) {
+		t.Error("enters bad node")
+	}
 }

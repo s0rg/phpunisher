@@ -15,7 +15,7 @@ func TestSingleInclude(t *testing.T) {
 	}
 
 	if builder().Name() != sincName {
-		t.Fatal("invalid name")
+		t.Error("invalid name")
 	}
 
 	singleInclude := []node.Node{&expr.Include{}}
@@ -44,4 +44,14 @@ func TestSingleInclude(t *testing.T) {
 	}
 
 	runCases(t, builder, testCases)
+}
+
+func TestSingleIncludeBadValue(t *testing.T) {
+	t.Parallel()
+
+	s := NewSingleInclude(1.0)
+
+	if s.EnterNode(&nonNode{}) {
+		t.Error("enters bad node")
+	}
 }

@@ -20,7 +20,7 @@ func buildFuncNodes(fn string) []node.Node {
 	}
 }
 
-func TestBadFunc(t *testing.T) {
+func TestFuncs(t *testing.T) {
 	t.Parallel()
 
 	blist := []string{"str_rot13", "base64_decode"}
@@ -30,7 +30,7 @@ func TestBadFunc(t *testing.T) {
 	}
 
 	if builder().Name() != bfName {
-		t.Fatal("invalid name")
+		t.Error("invalid name")
 	}
 
 	testCases := []testCase{
@@ -42,4 +42,14 @@ func TestBadFunc(t *testing.T) {
 	}
 
 	runCases(t, builder, testCases)
+}
+
+func TestFuncsBadValue(t *testing.T) {
+	t.Parallel()
+
+	s := NewFuncsBlacklist(1.0, []string{})
+
+	if s.EnterNode(&nonNode{}) {
+		t.Error("enters bad node")
+	}
 }
