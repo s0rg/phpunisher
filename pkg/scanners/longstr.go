@@ -12,12 +12,14 @@ const (
 	longstrName = "long-str"
 )
 
+// LongStrings finds too long strings without spaces.
 type LongStrings struct {
 	visitor
 	scorer
 	minLen int
 }
 
+// NewLongStrings creates new LongStrings scanner.
 func NewLongStrings(score float64, minLen int) *LongStrings {
 	return &LongStrings{
 		scorer: scorer{Step: score, name: longstrName},

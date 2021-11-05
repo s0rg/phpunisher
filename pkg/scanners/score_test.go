@@ -1,4 +1,4 @@
-package main
+package scanners
 
 import (
 	"math"
@@ -9,7 +9,7 @@ import (
 func TestScore(t *testing.T) {
 	t.Parallel()
 
-	sc := scores{
+	sc := Scores{
 		{Scanner: "3", Score: 3.0},
 		{Scanner: "1", Score: 1.0},
 		{Scanner: "2", Score: 2.0},

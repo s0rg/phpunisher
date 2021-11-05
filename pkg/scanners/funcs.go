@@ -11,12 +11,14 @@ import (
 
 const bfName = "funcs"
 
+// FuncsBlacklist finds blacklisted functions calls.
 type FuncsBlacklist struct {
 	visitor
 	scorer
 	list set.Strings
 }
 
+// NewFuncsBlacklist creates new FuncsBlacklist scanner.
 func NewFuncsBlacklist(score float64, list []string) *FuncsBlacklist {
 	bf := &FuncsBlacklist{
 		scorer: scorer{Step: score, name: bfName},
@@ -37,19 +39,13 @@ func (bf *FuncsBlacklist) EnterNode(w walker.Walkable) bool {
 
 	switch n.(type) {
 	case *expr.FunctionCall:
-		nm, ok := w.(*expr.FunctionCall).Function.(*name.Name)
-		if !ok {
-			return false
-		}
-
-		for _, p := range nm.Parts {
-			np, ok := p.(*name.NamePart)
-			if !ok {
-				continue
-			}
-
-			if bf.list.Has(np.Value) {
-				bf.scorer.Up()
+		if nm, ok := w.(*expr.FunctionCall).Function.(*name.Name); ok {
+			for _, p := range nm.Parts {
+				if np, ok := p.(*name.NamePart); ok {
+					if bf.list.Has(np.Value) {
+						bf.scorer.Up()
+					}
+				}
 			}
 		}
 	}

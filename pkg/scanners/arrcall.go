@@ -8,12 +8,14 @@ import (
 
 const arrcallName = "array-call"
 
+// ArrayCall finds calls via array elements.
 type ArrayCall struct {
 	prev node.Node
 	visitor
 	scorer
 }
 
+// NewArrayCall create new ArrayCall scanner.
 func NewArrayCall(score float64) *ArrayCall {
 	return &ArrayCall{
 		scorer: scorer{Step: score, name: arrcallName},

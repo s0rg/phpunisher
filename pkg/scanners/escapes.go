@@ -10,11 +10,13 @@ const (
 	badstrName = "escapes"
 )
 
+// Escapes finds too many escapes in string literals.
 type Escapes struct {
 	visitor
 	scorer
 }
 
+// NewEscapes creates new Escapes scanner.
 func NewEscapes(score float64) *Escapes {
 	return &Escapes{
 		scorer: scorer{Step: score, name: badstrName},
