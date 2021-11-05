@@ -4,6 +4,7 @@ import (
 	"github.com/z7zmey/php-parser/walker"
 )
 
+// Scanner is what every scanner must do.
 type Scanner interface {
 	walker.Visitor
 	Score() float64

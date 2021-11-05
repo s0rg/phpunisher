@@ -11,6 +11,7 @@ const (
 	arropsName = "array-ops"
 )
 
+// ArrayOperations finds too many array operations in file.
 type ArrayOperations struct {
 	visitor
 	step    float64
@@ -19,6 +20,7 @@ type ArrayOperations struct {
 	ops     int
 }
 
+// NewArrayOperations creates new ArrayOperations scanner.
 func NewArrayOperations(score, rate float64) *ArrayOperations {
 	return &ArrayOperations{
 		step:    score,

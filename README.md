@@ -11,8 +11,6 @@
 
 Finds code pieces, that looks like viruses/trojans inside php source code.
 
-Powered by great [php-parser](https://github.com/z7zmey/php-parser) library.
-
 Tested on following public malware collections:
 - [https://github.com/nikicat/web-malware-collection](https://github.com/nikicat/web-malware-collection)
 - [https://github.com/nbs-system/php-malware-finder](https://github.com/nbs-system/php-malware-finder)
@@ -27,12 +25,29 @@ Tested on following public malware collections:
 - [https://github.com/Am0rphous/Malware](https://github.com/Am0rphous/Malware)
 - [https://github.com/harsxv/malware-bucket](https://github.com/harsxv/malware-bucket)
 
+# features
+
+- powered by great [php-parser](https://github.com/z7zmey/php-parser) library
+- selected scanners run in parrallel
+- no signatures
+- fully customized detection rules
+
+# installation
+
+- [binaries](https://github.com/s0rg/phpunisher/releases) for Linux, macOS and Windows
 
 # usage
 ```
 ~# cd /to/your/php/code
 ~# phpunisher -report                  # to see report
 ~# phpunisher | xargs -d "\n" -n 1 rm  # to remove suspicios
+```
+or
+```
+~# phpunisher -dump-conf > my_rules.yaml
+~# $EDITOR my_rules.yaml # edit to suit your needs
+~# cd /to/your/php/code
+~# phpunisher -conf /path/to/my_rules.yaml -report
 ```
 
 # flags

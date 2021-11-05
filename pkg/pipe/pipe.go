@@ -91,9 +91,7 @@ func (p *Pipe) Walk(root string, fsys fs.FS) error {
 			switch {
 			case err != nil:
 				return err
-			case d.Type().IsDir():
-			case !d.Type().IsRegular():
-			default:
+			case d.Type().IsRegular():
 				p.match(path, fsys)
 			}
 

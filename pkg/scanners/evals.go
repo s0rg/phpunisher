@@ -8,11 +8,13 @@ import (
 
 const evalName = "evals"
 
+// Evals finds eval expression in code.
 type Evals struct {
 	visitor
 	scorer
 }
 
+// NewEvals creates new Evals scanner.
 func NewEvals(score float64) *Evals {
 	return &Evals{
 		scorer: scorer{Step: score, name: evalName},

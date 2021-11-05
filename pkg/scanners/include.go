@@ -8,12 +8,14 @@ import (
 
 const sincName = "include"
 
+// SingleInclude finds files with single operation - include.
 type SingleInclude struct {
 	root *node.Root
 	visitor
 	scorer
 }
 
+// NewSingleInclude creates new SingleInclude scanner.
 func NewSingleInclude(score float64) *SingleInclude {
 	return &SingleInclude{
 		scorer: scorer{Step: score, name: sincName},

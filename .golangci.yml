@@ -15,18 +15,19 @@ linters:
     # useless
     - exhaustivestruct
     - gochecknoglobals
-    - gomnd
-    - gofumpt
-    - gci
-    - testpackage
-    - tagliatelle
-    - forbidigo
     - forcetypeassert
+    - tagliatelle
+    - testpackage
     - varnamelen
+    - forbidigo
+    - goerr113
+    - gofumpt
+    - gomnd
+    - gci
     # deprecated
     - interfacer
-    - maligned
     - scopelint
+    - maligned
     - golint
   fast: false
 
