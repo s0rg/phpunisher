@@ -57,15 +57,15 @@ or
 -dump-conf
     dump default scanners config to stdout
 -mask string
-  	scan masks, use ';' as separator (default "*.php*")
+    scan masks, use ';' as separator (default "*.php*")
 -report
-  	show report for found suspects
+    show report for found suspects
 -score float
-  	minimal score to threat file as suspect
+    minimal score to threat file as suspect
 -version
-  	show version
+    show version
 -workers int
-  	workers count (scan parallelism) (default 2)
+    workers count (scan parallelism) (default 2)
 ```
 
 # scanners

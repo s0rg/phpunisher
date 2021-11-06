@@ -19,6 +19,7 @@ import (
 
 const (
 	appName = "PHPunisher"
+	appSite = "https://github.com/s0rg/phpunisher"
 )
 
 var (
@@ -39,22 +40,23 @@ func makeHandler(cfg *Config, callback func(string, scanners.Scores)) func(f *pi
 		parser := php7.NewParser(f.Body.Bytes(), f.Path)
 		parser.Parse()
 
-		result := scanners.Scores{}
-
 		root := parser.GetRootNode()
 		if root == nil {
+			log.Println("[-] cannot parse:", f.Path)
+
 			return
 		}
 
-		var wg sync.WaitGroup
+		var (
+			wg      sync.WaitGroup
+			result  = scanners.Scores{}
+			scns    = cfg.MakeScanners()
+			details = make(chan *scanners.Score, len(scns))
+		)
 
-		scns := cfg.MakeScanners()
-
-		details := make(chan *scanners.Score, len(scns))
+		wg.Add(len(scns))
 
 		for _, s := range scns {
-			wg.Add(1)
-
 			go func(s scanners.Scanner, n node.Node) {
 				n.Walk(s)
 
@@ -90,7 +92,7 @@ func loadConfig(path string) (c *Config, err error) {
 	)
 
 	if fd, err = os.Open(path); err != nil {
-		err = fmt.Errorf("open: %w", err)
+		err = fmt.Errorf("[-] open: %w", err)
 
 		return
 	}
@@ -98,7 +100,7 @@ func loadConfig(path string) (c *Config, err error) {
 	defer fd.Close()
 
 	if err = cfg.Decode(fd); err != nil {
-		err = fmt.Errorf("decode: %w", err)
+		err = fmt.Errorf("[-] decode: %w", err)
 
 		return
 	}
@@ -111,7 +113,7 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Println(appName, "git:", gitVersion, gitHash, "build at", buildDate)
+		fmt.Printf("%s %s git: %s build: %s site: %s\n", appName, gitVersion, gitHash, buildDate, appSite)
 
 		return
 	}
@@ -127,7 +129,7 @@ func main() {
 	if *configFile != "" {
 		ucf, err := loadConfig(*configFile)
 		if err != nil {
-			log.Fatal("config:", err)
+			log.Fatal("[-] config:", err)
 		}
 
 		cfg.Merge(ucf)
@@ -155,6 +157,6 @@ func main() {
 	p := pipe.New(*numWorkers, masks, handler)
 
 	if err := p.Walk(".", os.DirFS(".")); err != nil {
-		log.Fatal(err)
+		log.Fatal("[-] walk:", err)
 	}
 }
