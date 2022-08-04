@@ -1,4 +1,4 @@
 dist/
 vendor/
 test_corpus/
-test.coverage
+cover.out
