@@ -6,6 +6,7 @@
 [![License](https://img.shields.io/badge/license-MIT%20License-blue.svg)](https://github.com/s0rg/phpunisher/blob/main/LICENSE)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/s0rg/phpunisher)](go.mod)
 [![Release](https://img.shields.io/github/v/release/s0rg/phpunisher)](https://github.com/s0rg/phpunisher/releases/latest)
+![Downloads](https://img.shields.io/github/downloads/s0rg/phpunisher/total.svg)
 
 # phpunisher
 
