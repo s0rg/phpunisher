@@ -63,7 +63,7 @@ type testFS struct {
 	impl fs.File
 }
 
-func (tfs *testFS) Open(name string) (fs.File, error) {
+func (tfs *testFS) Open(_ string) (fs.File, error) {
 	return tfs.impl, tfs.err
 }
 

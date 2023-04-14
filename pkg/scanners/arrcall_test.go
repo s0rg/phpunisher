@@ -15,7 +15,7 @@ type testCase struct {
 
 type nonNode struct{}
 
-func (n *nonNode) Walk(v walker.Visitor) {}
+func (n *nonNode) Walk(_ walker.Visitor) {}
 
 func runCases(t *testing.T, builder func() Scanner, cases []testCase) {
 	t.Helper()

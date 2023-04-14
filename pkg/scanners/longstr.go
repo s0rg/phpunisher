@@ -23,6 +23,7 @@ type LongStrings struct {
 func NewLongStrings(score float64, minLen int) *LongStrings {
 	return &LongStrings{
 		scorer: scorer{Step: score, name: longstrName},
+		minLen: minLen,
 	}
 }
 
