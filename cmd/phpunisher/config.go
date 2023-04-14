@@ -22,7 +22,7 @@ type Config struct {
 }
 
 type ScoreSettings struct {
-	Score float64
+	Score float64 `yaml:"score"`
 }
 
 type FuncsBlacklistSettings struct {
