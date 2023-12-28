@@ -55,8 +55,8 @@ jobs:
           check-latest: true
           cache: true
       - name: init codeql
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           language: 'go'
       - name: run analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
